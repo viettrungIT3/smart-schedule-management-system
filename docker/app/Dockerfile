@@ -3,7 +3,7 @@ FROM php:8.2-apache
 # Cài extension cần thiết cho CodeIgniter 4
 RUN apt-get update && apt-get install -y \
     libicu-dev zlib1g-dev libzip-dev libpng-dev git unzip \
- && docker-php-ext-install intl pdo pdo_mysql zip gd \
+ && docker-php-ext-install intl pdo pdo_mysql mysqli zip gd \
  && a2enmod rewrite headers
 
 # Thiết lập DocumentRoot -> public
