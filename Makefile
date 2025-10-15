@@ -1,7 +1,16 @@
+
+# ---- Configuration ----
 PROJECT=ssms
 DOCKER_COMPOSE=docker compose
 APP_SERVICE=app
 DB_SERVICE=db
+COMPOSE_FILE ?= docker-compose.yml
+ENV_FILE     ?= .env
+include .env
+export
+
+# ---- Helpers ----
+DC = docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE)
 
 # 1) Khởi tạo dự án: build, up, cấu hình .env trong src, generate key
 init:
@@ -35,9 +44,11 @@ cli:
 migrate:
 	$(DOCKER_COMPOSE) exec -T $(APP_SERVICE) php spark migrate
 
+migrate-status:
+	$(DOCKER_COMPOSE) exec -T $(APP_SERVICE) php spark migrate:status
+
 seed:
-	# Thay SeederName bằng seeder bạn định nghĩa
-	$(DOCKER_COMPOSE) exec -T $(APP_SERVICE) php spark db:seed SeederName
+	$(DOCKER_COMPOSE) exec -T $(APP_SERVICE) php spark db:seed DevSeeder
 
 test:
 	$(DOCKER_COMPOSE) exec -T $(APP_SERVICE) ./vendor/bin/phpunit
