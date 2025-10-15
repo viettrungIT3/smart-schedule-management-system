@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    container_name: ssms_app
+    ports:
+      - "8088:80"
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+      - CI_ENVIRONMENT=development
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - ssms_net
+
+  db:
+    image: mysql:8.0
+    container_name: ssms_db
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=scheduleflow
+      - MYSQL_USER=ssms
+      - MYSQL_PASSWORD=ssms_pass
+      - MYSQL_ROOT_PASSWORD=root_pass
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - ssms_net
+
+volumes:
+  db_data:
+
+networks:
+  ssms_net:
+    driver: bridge
+
+
