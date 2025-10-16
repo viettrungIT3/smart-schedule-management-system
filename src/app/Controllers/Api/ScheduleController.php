@@ -52,7 +52,8 @@ class ScheduleController extends BaseController
     public function generate(): ResponseInterface
     {
         $svc = new SchedulerService();
-        $rows = $svc->generateWeeklySchedules();
+        $reset = (bool) ((int) ($this->request->getGet('reset') ?? 0));
+        $rows = $svc->generateWeeklySchedules($reset);
         return $this->response->setJSON(['created' => count($rows)]);
     }
 
