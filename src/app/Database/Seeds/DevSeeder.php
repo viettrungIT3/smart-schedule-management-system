@@ -26,14 +26,17 @@ class DevSeeder extends Seeder
         }
         $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
 
-        // Users: 1 admin, 2 teachers, 3 students
+        // Users: 1 admin, 2 teachers, 3 students (passwords are random-safe; no hardcoded secrets)
+        $rand = static function (): string {
+            return bin2hex(random_bytes(8));
+        };
         $users = [
-            ['role' => 'admin', 'full_name' => 'Admin One', 'email' => 'admin@example.com', 'password_hash' => password_hash('Admin@123', PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
-            ['role' => 'teacher', 'full_name' => 'Teacher A', 'email' => 'teacher.a@example.com', 'password_hash' => password_hash('Teacher@123', PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
-            ['role' => 'teacher', 'full_name' => 'Teacher B', 'email' => 'teacher.b@example.com', 'password_hash' => password_hash('Teacher@123', PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
-            ['role' => 'student', 'full_name' => 'Student 1', 'email' => 'student1@example.com', 'password_hash' => password_hash('Student@123', PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
-            ['role' => 'student', 'full_name' => 'Student 2', 'email' => 'student2@example.com', 'password_hash' => password_hash('Student@123', PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
-            ['role' => 'student', 'full_name' => 'Student 3', 'email' => 'student3@example.com', 'password_hash' => password_hash('Student@123', PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
+            ['role' => 'admin', 'full_name' => 'Admin One', 'email' => 'admin@example.com', 'password_hash' => password_hash($rand(), PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
+            ['role' => 'teacher', 'full_name' => 'Teacher A', 'email' => 'teacher.a@example.com', 'password_hash' => password_hash($rand(), PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
+            ['role' => 'teacher', 'full_name' => 'Teacher B', 'email' => 'teacher.b@example.com', 'password_hash' => password_hash($rand(), PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
+            ['role' => 'student', 'full_name' => 'Student 1', 'email' => 'student1@example.com', 'password_hash' => password_hash($rand(), PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
+            ['role' => 'student', 'full_name' => 'Student 2', 'email' => 'student2@example.com', 'password_hash' => password_hash($rand(), PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
+            ['role' => 'student', 'full_name' => 'Student 3', 'email' => 'student3@example.com', 'password_hash' => password_hash($rand(), PASSWORD_BCRYPT), 'status' => 'active', 'created_at' => Time::now()],
         ];
         $this->db->table('users')->insertBatch($users);
 

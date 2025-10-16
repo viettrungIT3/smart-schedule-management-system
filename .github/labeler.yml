@@ -1,0 +1,15 @@
+hotfix:
+  - head-branch: ['.*hotfix.*']
+
+feature:
+  - head-branch: ['.*feature.*']
+
+db:
+  - changed-files:
+      - any-glob-to-any-file: ['src/app/Database/**/*']
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**/*']
+
+

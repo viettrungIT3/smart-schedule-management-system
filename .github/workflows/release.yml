@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  tag-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and tag
+        id: bump
+        run: |
+          ts=$(date +"%Y.%m.%d.%H%M")
+          echo "tag=v${ts}" >> $GITHUB_OUTPUT
+      - name: Create tag
+        run: |
+          git tag -a "${{ steps.bump.outputs.tag }}" -m "Automated release"
+          git push origin "${{ steps.bump.outputs.tag }}"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.bump.outputs.tag }}
+          name: ${{ steps.bump.outputs.tag }}
+          body: |
+            Automated release.
+
+

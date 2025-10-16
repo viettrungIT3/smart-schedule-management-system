@@ -65,4 +65,47 @@ composer-update:
 clean:
 	$(DOCKER_COMPOSE) down -v --remove-orphans
 
+# --- Git/GitHub automation ---
+PR_TITLE?=auto: update
+PR_BODY?=Auto-generated PR
+PR_BASE?=develop
+PR_HEAD?=
+
+pr:
+	@if [ -z "$(PR_HEAD)" ]; then echo "Set PR_HEAD=<branch>"; exit 1; fi
+	gh pr create --base $(PR_BASE) --head $(PR_HEAD) --title "$(PR_TITLE)" --body "$(PR_BODY)"
+
+pr-label:
+	@if [ -z "$(PR)" ]; then echo "Set PR=<number>"; exit 1; fi
+	gh pr edit $(PR) --add-label feature,db || true
+
+pr-reviewer:
+	@if [ -z "$(PR)" ]; then echo "Set PR=<number>"; exit 1; fi
+	# sửa reviewer theo team của bạn
+	gh pr edit $(PR) --add-reviewer viettrungIT3 || true
+
+pr-open:
+	@if [ -z "$(PR)" ]; then echo "Set PR=<number>"; exit 1; fi
+	gh pr view $(PR) --web
+
+pr-automerge:
+	@if [ -z "$(PR)" ]; then echo "Set PR=<number>"; exit 1; fi
+	gh pr edit $(PR) --add-label automerge
+
+# Start feature/hotfix branches quickly
+N?=00
+NAME?=task-name
+
+feature-start:
+	git checkout develop && git pull --ff-only && git checkout -b $(N)/feature/$(NAME)
+
+hotfix-start:
+	git checkout master && git pull --ff-only && git checkout -b $(N)/hotfix/$(NAME)
+
+feature-pr:
+	$(MAKE) pr PR_BASE=develop PR_HEAD=$(shell git rev-parse --abbrev-ref HEAD) PR_TITLE="feat: $(NAME)" PR_BODY="Auto PR for feature $(NAME)"
+
+hotfix-pr:
+	$(MAKE) pr PR_BASE=master PR_HEAD=$(shell git rev-parse --abbrev-ref HEAD) PR_TITLE="hotfix: $(NAME)" PR_BODY="Auto PR for hotfix $(NAME)"
+
 
