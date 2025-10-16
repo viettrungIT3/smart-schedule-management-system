@@ -7,8 +7,14 @@ use App\Models\ScheduleModel;
 
 class SchedulerService
 {
-    public function generateWeeklySchedules(): array
+    public function generateWeeklySchedules(bool $reset = false): array
     {
+        $scheduleModel = new ScheduleModel();
+        if ($reset) {
+            // Xóa các lịch chưa apply để generate lại sạch sẽ
+            $scheduleModel->where('is_applied', 0)->delete();
+        }
+
         $assignments = (new TeachingAssignmentModel())
             ->orderBy('class_id ASC, subject_id ASC')
             ->findAll();
@@ -16,13 +22,23 @@ class SchedulerService
 
         $teacherBusy = $roomBusy = $classBusy = [];
         $created = [];
-        $scheduleModel = new ScheduleModel();
 
         foreach ($assignments as $a) {
             $remaining = max(1, (int)($a['periods_per_week'] ?? 1));
             for ($weekday = 1; $weekday <= 5 && $remaining > 0; $weekday++) {
                 foreach ($timeslots as $t) {
                     $tsId = (int)$t['id'];
+
+                    // Không ghi đè lịch đã apply
+                    $appliedExists = $scheduleModel->where('class_id', (int)$a['class_id'])
+                        ->where('weekday', $weekday)
+                        ->where('timeslot_id', $tsId)
+                        ->where('is_applied', 1)
+                        ->first();
+                    if ($appliedExists) {
+                        continue;
+                    }
+
                     if (!empty($teacherBusy[$a['teacher_id']][$weekday][$tsId])) continue;
                     if (!empty($classBusy[$a['class_id']][$weekday][$tsId])) continue;
                     $roomId = 1; // đơn giản hóa: dùng phòng 1
@@ -37,11 +53,12 @@ class SchedulerService
                         'weekday' => $weekday,
                         'is_applied' => 0,
                     ];
-                    // Upsert theo (class_id, weekday, timeslot_id)
+                    // Upsert theo (class_id, weekday, timeslot_id) chỉ trên bản ghi chưa apply
                     $existing = $scheduleModel
                         ->where('class_id', $row['class_id'])
                         ->where('weekday', $weekday)
                         ->where('timeslot_id', $tsId)
+                        ->where('is_applied', 0)
                         ->first();
                     if ($existing) {
                         $scheduleModel->update((int)$existing['id'], $row);
