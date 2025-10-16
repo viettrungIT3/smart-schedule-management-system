@@ -20,6 +20,7 @@ $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function 
     $routes->post('attendance/schedule/(:num)', 'AttendanceController::markForSchedule/$1');
     $routes->get('notifications/user/(:num)', 'NotificationController::listByUser/$1');
     $routes->post('notifications', 'NotificationController::create');
+    $routes->post('notifications/(:num)/read', 'NotificationController::markRead/$1');
     $routes->get('users', 'UserController::index');
     $routes->get('users/(:num)', 'UserController::show/$1');
     $routes->post('users', 'UserController::create');

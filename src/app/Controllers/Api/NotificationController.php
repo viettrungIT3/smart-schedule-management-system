@@ -32,6 +32,17 @@ class NotificationController extends BaseController
         }
         return $this->response->setJSON(['id' => $model->getInsertID()]);
     }
+
+    public function markRead(int $id): ResponseInterface
+    {
+        $model = new NotificationModel();
+        $row = $model->find($id);
+        if (!$row) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'Not found']);
+        }
+        $model->update($id, ['is_read' => 1]);
+        return $this->response->setJSON(['id' => $id, 'is_read' => 1]);
+    }
 }
 
 
