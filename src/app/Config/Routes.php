@@ -17,4 +17,6 @@ $routes->group('api', static function ($routes) {
     $routes->post('assignments', 'TeachingAssignmentController::create');
     $routes->get('attendance/schedule/(:num)', 'AttendanceController::listBySchedule/$1');
     $routes->post('attendance/schedule/(:num)', 'AttendanceController::markForSchedule/$1');
+    $routes->get('notifications/user/(:num)', 'NotificationController::listByUser/$1');
+    $routes->post('notifications', 'NotificationController::create');
 });
