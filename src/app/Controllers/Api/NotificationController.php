@@ -1,8 +1,9 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Models\NotificationModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Controllers\BaseController;
 
 class NotificationController extends BaseController
 {
