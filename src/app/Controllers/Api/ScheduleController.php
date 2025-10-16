@@ -1,8 +1,10 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Models\ScheduleModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Controllers\BaseController;
+use App\Services\SchedulerService;
 
 class ScheduleController extends BaseController
 {
@@ -46,6 +48,20 @@ class ScheduleController extends BaseController
             'total' => $model->pager->getTotal(),
             'data' => $results,
         ]);
+    }
+
+    public function generate(): ResponseInterface
+    {
+        $svc = new SchedulerService();
+        $rows = $svc->generateWeeklySchedules();
+        return $this->response->setJSON(['created' => count($rows)]);
+    }
+
+    public function apply(): ResponseInterface
+    {
+        $svc = new SchedulerService();
+        $n = $svc->applyGenerated();
+        return $this->response->setJSON(['applied' => $n]);
     }
 }
 

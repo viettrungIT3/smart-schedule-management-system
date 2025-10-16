@@ -1,7 +1,8 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Controllers\BaseController;
 
 class HealthController extends BaseController
 {

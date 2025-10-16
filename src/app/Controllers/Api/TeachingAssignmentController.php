@@ -1,8 +1,9 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Models\TeachingAssignmentModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Controllers\BaseController;
 
 class TeachingAssignmentController extends BaseController
 {

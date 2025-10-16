@@ -1,8 +1,9 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Models\UserModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Controllers\BaseController;
 
 class UserController extends BaseController
 {
