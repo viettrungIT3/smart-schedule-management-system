@@ -1,0 +1,28 @@
+name: Sync develop from master
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  open-sync-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create PR master -> develop
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: sync master into develop"
+          branch: ci/sync-master-into-develop
+          title: "chore: sync master into develop"
+          body: "Automated PR to keep develop up-to-date with master."
+          base: develop
+          labels: ci
+
+
