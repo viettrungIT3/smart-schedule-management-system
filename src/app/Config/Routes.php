@@ -10,6 +10,7 @@ $routes->get('/health', 'HealthController::index');
 $routes->group('api', static function ($routes) {
     $routes->get('schedules/class/(:num)', 'ScheduleController::byClass/$1');
     $routes->get('schedules/teacher/(:num)', 'ScheduleController::byTeacher/$1');
+    $routes->get('schedules/search', 'ScheduleController::search');
     $routes->post('schedules/generate', 'ScheduleController::generate');
     $routes->post('schedules/apply', 'ScheduleController::apply');
     $routes->get('assignments/class/(:num)', 'TeachingAssignmentController::listByClass/$1');
