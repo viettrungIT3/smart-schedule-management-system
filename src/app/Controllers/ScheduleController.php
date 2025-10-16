@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\ScheduleModel;
+use App\Services\SchedulerService;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class ScheduleController extends BaseController
@@ -16,6 +17,20 @@ class ScheduleController extends BaseController
     {
         $model = new ScheduleModel();
         return $this->response->setJSON($model->listByTeacher($teacherId));
+    }
+
+    public function generate(): ResponseInterface
+    {
+        $svc = new SchedulerService();
+        $rows = $svc->generateWeeklySchedules();
+        return $this->response->setJSON(['created' => count($rows)]);
+    }
+
+    public function apply(): ResponseInterface
+    {
+        $svc = new SchedulerService();
+        $n = $svc->applyGenerated();
+        return $this->response->setJSON(['applied' => $n]);
     }
 }
 
