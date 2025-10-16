@@ -19,4 +19,9 @@ $routes->group('api', static function ($routes) {
     $routes->post('attendance/schedule/(:num)', 'AttendanceController::markForSchedule/$1');
     $routes->get('notifications/user/(:num)', 'NotificationController::listByUser/$1');
     $routes->post('notifications', 'NotificationController::create');
+    $routes->get('users', 'UserController::index');
+    $routes->get('users/(:num)', 'UserController::show/$1');
+    $routes->post('users', 'UserController::create');
+    $routes->put('users/(:num)', 'UserController::updateUser/$1');
+    $routes->delete('users/(:num)', 'UserController::deleteUser/$1');
 });
