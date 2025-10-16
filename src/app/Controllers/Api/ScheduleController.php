@@ -49,7 +49,6 @@ class ScheduleController extends BaseController
             'data' => $results,
         ]);
     }
-
     public function generate(): ResponseInterface
     {
         $svc = new SchedulerService();
