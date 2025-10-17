@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use App\Controllers\BaseController;
 use App\Libraries\JWTHelper;
 use App\Models\UserModel;
+use App\Services\RBACService;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
@@ -29,12 +30,20 @@ class AuthController extends BaseController
     private $userModel;
 
     /**
+     * RBAC Service instance
+     * 
+     * @var RBACService
+     */
+    private $rbacService;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->jwtHelper = new JWTHelper();
         $this->userModel = new UserModel();
+        $this->rbacService = new RBACService();
     }
 
     /**
@@ -102,11 +111,19 @@ class AuthController extends BaseController
             ]);
         }
 
+        // Get user roles and permissions
+        $userRoles = $this->rbacService->getUserRoles($user['id']);
+        $userPermissions = $this->rbacService->getUserPermissions($user['id']);
+
         return $this->respond([
             'message' => 'Login successful',
             'user' => $userData,
             'tokens' => $tokens,
-            'auth_type' => $authType
+            'auth_type' => $authType,
+            'rbac' => [
+                'roles' => $userRoles,
+                'permissions' => $userPermissions
+            ]
         ], 200);
     }
 
@@ -206,8 +223,16 @@ class AuthController extends BaseController
             ], 401);
         }
 
+        // Get user roles and permissions
+        $userRoles = $this->rbacService->getUserRoles($user['id']);
+        $userPermissions = $this->rbacService->getUserPermissions($user['id']);
+
         return $this->respond([
-            'user' => $user
+            'user' => $user,
+            'rbac' => [
+                'roles' => $userRoles,
+                'permissions' => $userPermissions
+            ]
         ], 200);
     }
 
