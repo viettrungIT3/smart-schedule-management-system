@@ -19,6 +19,15 @@ $routes->get('/docs', 'SwaggerController::index', ['as' => 'swagger_docs']);
 $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function ($routes) {
     
     // ------------------------------------------------------------------------
+    // AUTHENTICATION (FU-AUTH-01)
+    // ------------------------------------------------------------------------
+    $routes->post('auth/login', 'AuthController::login');
+    $routes->post('auth/logout', 'AuthController::logout');
+    $routes->post('auth/refresh', 'AuthController::refresh');
+    $routes->get('auth/profile', 'AuthController::profile', ['filter' => 'jwt-auth']);
+    $routes->post('auth/change-password', 'AuthController::changePassword', ['filter' => 'jwt-auth']);
+    
+    // ------------------------------------------------------------------------
     // SCHEDULES (FU-02, FU-05)
     // ------------------------------------------------------------------------
     $routes->get('schedules/class/(:num)', 'ScheduleController::byClass/$1');
