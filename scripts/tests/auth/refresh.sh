@@ -35,11 +35,14 @@ if echo "$RESPONSE" | jq -e '.tokens.access_token' > /dev/null; then
   echo "New Access Token: ${NEW_ACCESS_TOKEN:0:50}..."
   echo "New Refresh Token: ${NEW_REFRESH_TOKEN:0:50}..."
   
-  # Update saved tokens
-  echo "$NEW_ACCESS_TOKEN" > /tmp/access_token.txt
+  # Update config.env with new access token
+  CONFIG_FILE="$(dirname "$0")/../config.env"
+  sed -i.bak "s/^TOKEN=.*/TOKEN=$NEW_ACCESS_TOKEN/" "$CONFIG_FILE"
+  
+  # Update refresh token file
   echo "$NEW_REFRESH_TOKEN" > /tmp/refresh_token.txt
   
-  echo "✅ Tokens updated successfully"
+  echo "✅ Tokens updated in config.env and refresh token file"
 else
   echo "❌ Token refresh failed!"
   exit 1

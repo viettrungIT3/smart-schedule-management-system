@@ -34,11 +34,14 @@ if echo "$RESPONSE" | jq -e '.tokens.access_token' > /dev/null; then
   echo "Access Token: ${ACCESS_TOKEN:0:50}..."
   echo "Refresh Token: ${REFRESH_TOKEN:0:50}..."
   
-  # Save tokens for other tests
-  echo "$ACCESS_TOKEN" > /tmp/access_token.txt
+  # Save tokens to config.env
+  CONFIG_FILE="$(dirname "$0")/../config.env"
+  sed -i.bak "s/^TOKEN=.*/TOKEN=$ACCESS_TOKEN/" "$CONFIG_FILE"
+  
+  # Also save refresh token to a separate file for refresh tests
   echo "$REFRESH_TOKEN" > /tmp/refresh_token.txt
   
-  echo "✅ Tokens saved for other tests"
+  echo "✅ Tokens saved to config.env and refresh token file"
 else
   echo "❌ Login failed!"
   exit 1

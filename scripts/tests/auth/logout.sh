@@ -20,8 +20,13 @@ if echo "$RESPONSE" | jq -e '.message' > /dev/null; then
   echo "✅ Logout successful: $MESSAGE"
   
   # Clean up saved tokens
-  rm -f /tmp/access_token.txt /tmp/refresh_token.txt
-  echo "✅ Tokens cleaned up"
+  rm -f /tmp/refresh_token.txt
+  
+  # Clear TOKEN from config.env
+  CONFIG_FILE="$(dirname "$0")/../config.env"
+  sed -i.bak "s/^TOKEN=.*/TOKEN=/" "$CONFIG_FILE"
+  
+  echo "✅ Tokens cleaned up from config.env and temp files"
 else
   echo "❌ Logout failed!"
   exit 1
