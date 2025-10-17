@@ -39,7 +39,11 @@ restart:
 	$(DOCKER_COMPOSE) up -d
 
 cli:
-	$(DOCKER_COMPOSE) exec $(APP_SERVICE) bash
+	@if [ -n "$(CMD)" ]; then \
+		$(DOCKER_COMPOSE) exec $(APP_SERVICE) bash -c "$(CMD)"; \
+	else \
+		$(DOCKER_COMPOSE) exec $(APP_SERVICE) bash; \
+	fi
 
 migrate:
 	$(DOCKER_COMPOSE) exec -T $(APP_SERVICE) php spark migrate
