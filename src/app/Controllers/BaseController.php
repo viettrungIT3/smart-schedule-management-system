@@ -21,13 +21,6 @@ use Psr\Log\LoggerInterface;
 abstract class BaseController extends Controller
 {
     /**
-     * Instance of the main Request object.
-     *
-     * @var CLIRequest|IncomingRequest
-     */
-    protected $request;
-
-    /**
      * An array of helpers to be loaded automatically upon
      * class instantiation. These helpers will be available
      * to all other controllers that extend BaseController.
@@ -53,5 +46,63 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = service('session');
+    }
+
+    /**
+     * Send JSON response using Controller's $response
+     * 
+     * @param mixed $data Response data
+     * @param int $statusCode HTTP status code
+     * @return ResponseInterface
+     */
+    protected function respond($data, int $statusCode = 200): ResponseInterface
+    {
+        return $this->response->setStatusCode($statusCode)
+                             ->setContentType('application/json')
+                             ->setJSON($data);
+    }
+
+    /**
+     * Send success response
+     * 
+     * @param mixed $data Response data
+     * @param string $message Success message
+     * @param int $statusCode HTTP status code
+     * @return ResponseInterface
+     */
+    protected function success($data = null, string $message = 'Success', int $statusCode = 200): ResponseInterface
+    {
+        $response = [
+            'success' => true,
+            'message' => $message
+        ];
+
+        if ($data !== null) {
+            $response['data'] = $data;
+        }
+
+        return $this->respond($response, $statusCode);
+    }
+
+    /**
+     * Send error response
+     * 
+     * @param string $message Error message
+     * @param int $statusCode HTTP status code
+     * @param mixed $errors Additional error details
+     * @return ResponseInterface
+     */
+    protected function error(string $message, int $statusCode = 400, $errors = null): ResponseInterface
+    {
+        $response = [
+            'success' => false,
+            'error' => $message
+        ];
+
+        if ($errors !== null) {
+            $response['errors'] = $errors;
+        }
+
+        return $this->respond($response, $statusCode);
     }
 }
