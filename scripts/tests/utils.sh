@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Load config
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-}")" && pwd)"
 CONFIG_FILE="${SCRIPT_DIR}/config.env"
 SAMPLE_FILE="${SCRIPT_DIR}/config.env.sample"
 
@@ -30,14 +30,26 @@ hdr_auth() {
 
 curl_json() {
   local method="$1" path="$2" data="${3:-}"
+  
   if [[ -n "${data}" ]]; then
-    curl -sS -X "${method}" \
-      -H "Content-Type: application/json" \
-      -H "$(hdr_auth)" \
-      -d "${data}" \
-      "${BASE_URL}${path}"
+    if [[ -n "${TOKEN}" ]]; then
+      curl -sS -X "${method}" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Bearer ${TOKEN}" \
+        -d "${data}" \
+        "${BASE_URL}${path}"
+    else
+      curl -sS -X "${method}" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "${data}" \
+        "${BASE_URL}${path}"
+    fi
   else
-    curl -sS -X "${method}" -H "$(hdr_auth)" "${BASE_URL}${path}"
+    if [[ -n "${TOKEN}" ]]; then
+      curl -sS -X "${method}" -H "Authorization: Bearer ${TOKEN}" "${BASE_URL}${path}"
+    else
+      curl -sS -X "${method}" "${BASE_URL}${path}"
+    fi
   fi
 }
 
