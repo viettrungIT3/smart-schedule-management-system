@@ -8,8 +8,8 @@ print_section "JWT Authentication - Logout Test"
 
 echo "Testing logout endpoint..."
 
-# Make logout request
-RESPONSE=$(curl_json -X POST "$BASE_URL/api/auth/logout")
+# Make logout request directly with curl
+RESPONSE=$(curl -s -X POST "$BASE_URL/api/auth/logout")
 
 echo "Response:"
 echo "$RESPONSE" | jq '.'

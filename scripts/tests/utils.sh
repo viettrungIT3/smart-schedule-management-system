@@ -30,27 +30,30 @@ hdr_auth() {
 
 curl_json() {
   local method="$1" path="$2" data="${3:-}"
+  local url="${BASE_URL}${path}"
   
+  # Build curl command
+  local curl_cmd="curl -sS -X ${method}"
+  
+  # Add headers
   if [[ -n "${data}" ]]; then
-    if [[ -n "${TOKEN}" ]]; then
-      curl -sS -X "${method}" \
-        -H "Content-Type: application/x-www-form-urlencoded" \
-        -H "Authorization: Bearer ${TOKEN}" \
-        -d "${data}" \
-        "${BASE_URL}${path}"
-    else
-      curl -sS -X "${method}" \
-        -H "Content-Type: application/x-www-form-urlencoded" \
-        -d "${data}" \
-        "${BASE_URL}${path}"
-    fi
-  else
-    if [[ -n "${TOKEN}" ]]; then
-      curl -sS -X "${method}" -H "Authorization: Bearer ${TOKEN}" "${BASE_URL}${path}"
-    else
-      curl -sS -X "${method}" "${BASE_URL}${path}"
-    fi
+    curl_cmd="${curl_cmd} -H 'Content-Type: application/x-www-form-urlencoded'"
   fi
+  
+  if [[ -n "${TOKEN}" ]]; then
+    curl_cmd="${curl_cmd} -H 'Authorization: Bearer ${TOKEN}'"
+  fi
+  
+  # Add data if provided
+  if [[ -n "${data}" ]]; then
+    curl_cmd="${curl_cmd} -d '${data}'"
+  fi
+  
+  # Add URL
+  curl_cmd="${curl_cmd} '${url}'"
+  
+  # Execute command
+  eval "${curl_cmd}"
 }
 
 print_section() { echo -e "\n===== $1 ====="; }

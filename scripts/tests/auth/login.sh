@@ -14,11 +14,12 @@ echo "Testing login with valid credentials..."
 echo "Email: $EMAIL"
 echo "Password: $PASSWORD"
 
-# Make login request
-RESPONSE=$(curl_json -X POST "$BASE_URL/api/auth/login" \
+# Make login request directly with curl
+RESPONSE=$(curl -s -X POST "$BASE_URL/api/auth/login" \
   -d "email=$EMAIL" \
   -d "password=$PASSWORD" \
-  -d "auth_type=jwt")
+  -d "auth_type=jwt" \
+  -H "Content-Type: application/x-www-form-urlencoded")
 
 echo "Response:"
 echo "$RESPONSE" | jq '.'

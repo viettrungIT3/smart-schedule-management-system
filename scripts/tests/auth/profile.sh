@@ -24,8 +24,8 @@ fi
 echo "Testing profile endpoint with JWT token..."
 echo "Token: ${TOKEN:0:50}..."
 
-# Make profile request
-RESPONSE=$(curl_json -X GET "$BASE_URL/api/auth/profile" \
+# Make profile request directly with curl
+RESPONSE=$(curl -s -X GET "$BASE_URL/api/auth/profile" \
   -H "Authorization: Bearer $TOKEN")
 
 echo "Response:"

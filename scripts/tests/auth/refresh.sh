@@ -17,9 +17,10 @@ REFRESH_TOKEN=$(cat /tmp/refresh_token.txt)
 echo "Testing token refresh..."
 echo "Refresh Token: ${REFRESH_TOKEN:0:50}..."
 
-# Make refresh request
-RESPONSE=$(curl_json -X POST "$BASE_URL/api/auth/refresh" \
-  -d "refresh_token=$REFRESH_TOKEN")
+# Make refresh request directly with curl
+RESPONSE=$(curl -s -X POST "$BASE_URL/api/auth/refresh" \
+  -d "refresh_token=$REFRESH_TOKEN" \
+  -H "Content-Type: application/x-www-form-urlencoded")
 
 echo "Response:"
 echo "$RESPONSE" | jq '.'
