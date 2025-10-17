@@ -318,15 +318,4 @@ class RBACService
 
         return $this->hasPermission($userId, $permission['name']);
     }
-
-    /**
-     * Get role by name
-     *
-     * @param string $roleName
-     * @return array|null
-     */
-    public function getRoleByName(string $roleName): ?array
-    {
-        return $this->roleModel->where('name', $roleName)->first();
-    }
 }
