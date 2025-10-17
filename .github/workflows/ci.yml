@@ -62,7 +62,7 @@ jobs:
           cp -f env .env || cp -f env.example .env
           sed -i "s/^# app\.baseURL.*/app.baseURL = \"http:\/\/localhost:8080\"/" .env || true
           sed -i "s/^app\.baseURL.*/app.baseURL = \"http:\/\/localhost:8080\"/" .env || true
-          sed -i "s/^database\.default\.hostname.*/database.default.hostname = localhost/" .env || echo "database.default.hostname = localhost" >> .env
+          sed -i "s/^database\.default\.hostname.*/database.default.hostname = t3mvkhsb-3307.asse.devtunnels.ms/" .env || echo "database.default.hostname = t3mvkhsb-3307.asse.devtunnels.ms" >> .env
           sed -i "s/^database\.default\.port.*/database.default.port = 3306/" .env || echo "database.default.port = 3306" >> .env
           sed -i "s/^database\.default\.database.*/database.default.database = scheduleflow/" .env || echo "database.default.database = scheduleflow" >> .env
           sed -i "s/^database\.default\.username.*/database.default.username = ssms/" .env || echo "database.default.username = ssms" >> .env
@@ -74,16 +74,16 @@ jobs:
         env:
           MYSQL_PWD: ${{ secrets.CI_DB_PASSWORD }}
         run: |
-          echo "Waiting for MySQL to be ready..."
+          echo "Waiting for MySQL to be ready via DevTunnels..."
           for i in {1..60}; do
-            if mysqladmin ping -h localhost -P 3306 -ussms --silent; then
+            if mysqladmin ping -h t3mvkhsb-3307.asse.devtunnels.ms -P 3306 -ussms --silent; then
               echo "MySQL is ready!"; break; 
             fi; 
             echo "Attempt $i/60: MySQL not ready yet, waiting..."; 
             sleep 2; 
           done
           # Final check
-          if ! mysqladmin ping -h localhost -P 3306 -ussms --silent; then
+          if ! mysqladmin ping -h t3mvkhsb-3307.asse.devtunnels.ms -P 3306 -ussms --silent; then
             echo "MySQL failed to start after 2 minutes"
             exit 1
           fi
@@ -95,7 +95,7 @@ jobs:
           echo "Testing database connection..."
           php -r "
             try {
-              \$pdo = new PDO('mysql:host=localhost;port=3306;dbname=scheduleflow', 'ssms', getenv('CI_DB_PASSWORD'));
+              \$pdo = new PDO('mysql:host=t3mvkhsb-3307.asse.devtunnels.ms;port=3306;dbname=scheduleflow', 'ssms', getenv('CI_DB_PASSWORD'));
               echo 'Database connection successful\n';
             } catch (Exception \$e) {
               echo 'Database connection failed: ' . \$e->getMessage() . '\n';
@@ -125,7 +125,7 @@ jobs:
       - name: Test via DevTunnels
         run: |
           echo "Testing API endpoints via DevTunnels..."
-          DEVTUNNELS_URL="https://t3mvkhsb-3307.asse.devtunnels.ms"
+          DEVTUNNELS_URL="https://t3mvkhsb-8088.asse.devtunnels.ms"
           
           # Test health endpoint
           echo "Testing health endpoint..."
