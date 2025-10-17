@@ -194,7 +194,8 @@ class RBACService
 
         return $this->userRoleModel->insert([
             'user_id' => $userId,
-            'role_id' => $roleId
+            'role_id' => $roleId,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
     }
 
