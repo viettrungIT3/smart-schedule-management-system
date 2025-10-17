@@ -35,7 +35,7 @@ class UserController extends BaseController
         return $this->response->setJSON(['id' => $model->getInsertID()]);
     }
 
-    public function updateUser(int $id): ResponseInterface
+    public function update(int $id): ResponseInterface
     {
         $data = $this->request->getJSON(true) ?? [];
         $model = new UserModel();
@@ -46,14 +46,16 @@ class UserController extends BaseController
         if (!$model->update($id, $data)) {
             return $this->response->setStatusCode(422)->setJSON(['errors' => $model->errors()]);
         }
-        return $this->response->setJSON(['updated' => true]);
+        return $this->response->setJSON(['success' => true]);
     }
 
-    public function deleteUser(int $id): ResponseInterface
+    public function delete(int $id): ResponseInterface
     {
         $model = new UserModel();
-        $model->delete($id);
-        return $this->response->setJSON(['deleted' => true]);
+        if (!$model->delete($id)) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+        }
+        return $this->response->setJSON(['success' => true]);
     }
 }
 

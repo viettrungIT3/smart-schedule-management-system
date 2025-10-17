@@ -55,6 +55,6 @@ $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function 
     $routes->get('users', 'UserController::index');
     $routes->get('users/(:num)', 'UserController::show/$1');
     $routes->post('users', 'UserController::create');
-    $routes->put('users/(:num)', 'UserController::updateUser/$1');
-    $routes->delete('users/(:num)', 'UserController::deleteUser/$1');
+    $routes->put('users/(:num)', 'UserController::update/$1');
+    $routes->delete('users/(:num)', 'UserController::delete/$1');
 });
