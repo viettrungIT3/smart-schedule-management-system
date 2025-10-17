@@ -207,7 +207,24 @@ bash scripts/tests/assignments/create.sh 1 2 1
 
 ---
 
-## 8. Deployment
+## 8. Documentation
+
+### **📚 Tài liệu đầy đủ trong thư mục `docs/`:**
+
+| File | Mô tả |
+|------|-------|
+| **`docs/SRS.md`** | Software Requirements Specification - Yêu cầu chức năng chi tiết |
+| **`docs/API_DOCUMENTATION.md`** | API Reference - Tài liệu đầy đủ 20+ endpoints |
+| **`docs/DEPLOYMENT.md`** | Deployment Guide - Hướng dẫn triển khai production |
+
+### **🔗 Quick Links:**
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - Complete API reference
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment
+- **[SRS Specification](docs/SRS.md)** - Functional requirements
+
+---
+
+## 9. Deployment
 
 Hệ thống đã sẵn sàng cho production deployment với:
 - ✅ Docker containerization
@@ -216,5 +233,6 @@ Hệ thống đã sẵn sàng cho production deployment với:
 - ✅ Security best practices
 - ✅ CI/CD pipeline
 - ✅ Comprehensive testing
+- ✅ Complete documentation
 
 **ScheduleFlow** - Smart Schedule Management System đã hoàn thành 100% và sẵn sàng phục vụ! 
