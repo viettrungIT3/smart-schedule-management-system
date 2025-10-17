@@ -4,18 +4,21 @@ namespace App\Services;
 
 use App\Models\PermissionModel;
 use App\Models\RoleModel;
+use App\Models\RolePermissionModel;
 use App\Models\UserRoleModel;
 
 class RBACService
 {
     protected $permissionModel;
     protected $roleModel;
+    protected $rolePermissionModel;
     protected $userRoleModel;
 
     public function __construct()
     {
         $this->permissionModel = new PermissionModel();
         $this->roleModel = new RoleModel();
+        $this->rolePermissionModel = new RolePermissionModel();
         $this->userRoleModel = new UserRoleModel();
     }
 
@@ -314,5 +317,16 @@ class RBACService
         }
 
         return $this->hasPermission($userId, $permission['name']);
+    }
+
+    /**
+     * Get role by name
+     *
+     * @param string $roleName
+     * @return array|null
+     */
+    public function getRoleByName(string $roleName): ?array
+    {
+        return $this->roleModel->where('name', $roleName)->first();
     }
 }
