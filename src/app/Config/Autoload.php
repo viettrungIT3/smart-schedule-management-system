@@ -75,7 +75,9 @@ class Autoload extends AutoloadConfig
      *
      * @var list<string>
      */
-    public $files = [];
+    public $files = [
+        SYSTEMPATH . 'Helpers/form_helper.php',
+    ];
 
     /**
      * -------------------------------------------------------------------

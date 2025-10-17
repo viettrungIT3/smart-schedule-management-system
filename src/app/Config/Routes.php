@@ -14,6 +14,35 @@ $routes->get('/health', 'Api\\HealthController::index');
 $routes->get('/docs', 'SwaggerController::index', ['as' => 'swagger_docs']);
 
 // ============================================================================
+// AUTHENTICATION ROUTES (Frontend)
+// ============================================================================
+$routes->group('', static function ($routes) {
+    // Login
+    $routes->get('login', 'AuthController::login');
+    $routes->post('login', 'AuthController::processLogin', ['filter' => 'rate-limit']);
+    
+    // Register
+    $routes->get('register', 'AuthController::register');
+    $routes->post('register', 'AuthController::processRegister');
+    
+    // Logout
+    $routes->get('logout', 'AuthController::logout');
+    
+    // Profile
+    $routes->get('profile', 'AuthController::profile');
+});
+
+// ============================================================================
+// DASHBOARD ROUTES
+// ============================================================================
+$routes->group('', static function ($routes) {
+    $routes->get('dashboard', 'DashboardController::index');
+    $routes->get('dashboard/admin', 'DashboardController::admin');
+    $routes->get('dashboard/teacher', 'DashboardController::teacher');
+    $routes->get('dashboard/student', 'DashboardController::student');
+});
+
+// ============================================================================
 // API ROUTES
 // ============================================================================
 $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function ($routes) {

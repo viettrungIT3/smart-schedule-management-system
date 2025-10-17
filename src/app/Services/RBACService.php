@@ -4,18 +4,21 @@ namespace App\Services;
 
 use App\Models\PermissionModel;
 use App\Models\RoleModel;
+use App\Models\RolePermissionModel;
 use App\Models\UserRoleModel;
 
 class RBACService
 {
     protected $permissionModel;
     protected $roleModel;
+    protected $rolePermissionModel;
     protected $userRoleModel;
 
     public function __construct()
     {
         $this->permissionModel = new PermissionModel();
         $this->roleModel = new RoleModel();
+        $this->rolePermissionModel = new RolePermissionModel();
         $this->userRoleModel = new UserRoleModel();
     }
 
@@ -191,7 +194,8 @@ class RBACService
 
         return $this->userRoleModel->insert([
             'user_id' => $userId,
-            'role_id' => $roleId
+            'role_id' => $roleId,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
     }
 
