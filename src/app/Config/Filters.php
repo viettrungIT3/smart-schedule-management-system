@@ -35,6 +35,7 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'jwt-auth'      => \App\Filters\JWTAuthFilter::class,
+        'rbac'          => \App\Filters\RBACFilter::class,
     ];
 
     /**
