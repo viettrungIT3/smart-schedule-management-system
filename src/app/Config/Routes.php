@@ -11,6 +11,7 @@ use CodeIgniter\Router\RouteCollection;
 // ============================================================================
 $routes->get('/', 'Home::index');
 $routes->get('/health', 'Api\\HealthController::index');
+$routes->get('/docs', 'SwaggerController::index', ['as' => 'swagger_docs']);
 
 // ============================================================================
 // API ROUTES

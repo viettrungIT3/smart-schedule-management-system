@@ -1,0 +1,950 @@
+openapi: 3.0.0
+
+info:
+  title: ScheduleFlow API
+  version: 1.0.0
+  description: |
+    Smart Schedule Management System API Documentation
+    
+    ## Overview
+    ScheduleFlow is a comprehensive system for managing educational schedules with automatic scheduling, conflict detection, and real-time notifications.
+    
+    ## Features
+    - **User Management**: CRUD operations for users (Admin, Teacher, Student)
+    - **Schedule Generation**: Automatic schedule generation with conflict detection
+    - **Teaching Assignments**: Manage teacher-class-subject assignments
+    - **Attendance Tracking**: Mark and track student attendance
+    - **Notifications**: Real-time notifications for schedule changes
+    - **Advanced Search**: Filter and search schedules by various criteria
+    
+    ## Base URL
+    All API endpoints are relative to the base URL: `http://localhost:8088`
+
+servers:
+  - url: http://localhost:8088
+    description: Development server
+  - url: https://api.scheduleflow.com
+    description: Production server
+
+paths:
+  /health:
+    get:
+      tags:
+        - System
+      summary: Health check endpoint
+      description: Returns the health status of the API
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+
+  /api/users:
+    get:
+      tags:
+        - User Management
+      summary: List all users
+      description: Retrieve a list of all users in the system
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - User Management
+      summary: Create a new user
+      description: Create a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 7
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/users/{id}:
+    get:
+      tags:
+        - User Management
+      summary: Get user by ID
+      description: Retrieve a specific user by their ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - User Management
+      summary: Update user
+      description: Update an existing user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - User Management
+      summary: Delete user
+      description: Delete a user from the system
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/schedules/generate:
+    post:
+      tags:
+        - Schedule Management
+      summary: Generate schedules
+      description: Generate weekly schedules based on teaching assignments
+      parameters:
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [0, 1]
+            default: 0
+          description: Reset unapplied schedules before generation (1 = yes, 0 = no)
+      responses:
+        '200':
+          description: Schedules generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    example: 7
+        '400':
+          description: Generation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/schedules/apply:
+    post:
+      tags:
+        - Schedule Management
+      summary: Apply generated schedules
+      description: Apply generated schedules to make them active
+      responses:
+        '200':
+          description: Schedules applied successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  applied:
+                    type: integer
+                    example: 1
+        '400':
+          description: Application failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/schedules/search:
+    get:
+      tags:
+        - Schedule Management
+      summary: Search schedules
+      description: Search schedules with filters and pagination
+      parameters:
+        - name: class_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter by class ID
+        - name: teacher_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter by teacher ID
+        - name: weekday
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+          description: Filter by weekday (1-5)
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+          description: Items per page
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleSearchResponse'
+
+  /api/schedules/class/{class_id}:
+    get:
+      tags:
+        - Schedule Management
+      summary: Get schedules by class
+      description: Retrieve all schedules for a specific class
+      parameters:
+        - name: class_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Class ID
+      responses:
+        '200':
+          description: Class schedules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+
+  /api/schedules/teacher/{teacher_id}:
+    get:
+      tags:
+        - Schedule Management
+      summary: Get schedules by teacher
+      description: Retrieve all schedules for a specific teacher
+      parameters:
+        - name: teacher_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Teacher ID
+      responses:
+        '200':
+          description: Teacher schedules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+
+  /api/assignments:
+    get:
+      tags:
+        - Teaching Assignments
+      summary: List all assignments
+      description: Retrieve all teaching assignments with pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+          description: Items per page
+      responses:
+        '200':
+          description: List of assignments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignmentListResponse'
+    post:
+      tags:
+        - Teaching Assignments
+      summary: Create assignment
+      description: Create a new teaching assignment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssignmentRequest'
+      responses:
+        '201':
+          description: Assignment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+
+  /api/assignments/{id}:
+    put:
+      tags:
+        - Teaching Assignments
+      summary: Update assignment
+      description: Update an existing teaching assignment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Assignment ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAssignmentRequest'
+      responses:
+        '200':
+          description: Assignment updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+    delete:
+      tags:
+        - Teaching Assignments
+      summary: Delete assignment
+      description: Delete a teaching assignment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Assignment ID
+      responses:
+        '200':
+          description: Assignment deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+
+  /api/assignments/class/{class_id}:
+    get:
+      tags:
+        - Teaching Assignments
+      summary: Get assignments by class
+      description: Retrieve all assignments for a specific class
+      parameters:
+        - name: class_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Class ID
+      responses:
+        '200':
+          description: Class assignments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+
+  /api/assignments/teacher/{teacher_id}:
+    get:
+      tags:
+        - Teaching Assignments
+      summary: Get assignments by teacher
+      description: Retrieve all assignments for a specific teacher
+      parameters:
+        - name: teacher_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Teacher ID
+      responses:
+        '200':
+          description: Teacher assignments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+
+  /api/attendance/schedule/{schedule_id}:
+    get:
+      tags:
+        - Attendance
+      summary: Get attendance by schedule
+      description: Retrieve attendance records for a specific schedule
+      parameters:
+        - name: schedule_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Schedule ID
+      responses:
+        '200':
+          description: Attendance records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attendance'
+    post:
+      tags:
+        - Attendance
+      summary: Mark attendance
+      description: Mark attendance for students in a schedule
+      parameters:
+        - name: schedule_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Schedule ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MarkAttendanceRequest'
+      responses:
+        '200':
+          description: Attendance marked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceResponse'
+
+  /api/notifications/user/{user_id}:
+    get:
+      tags:
+        - Notifications
+      summary: Get notifications by user
+      description: Retrieve all notifications for a specific user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: User notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+
+  /api/notifications:
+    post:
+      tags:
+        - Notifications
+      summary: Create notification
+      description: Create a new notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNotificationRequest'
+      responses:
+        '201':
+          description: Notification created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 7
+
+  /api/notifications/{id}/read:
+    post:
+      tags:
+        - Notifications
+      summary: Mark notification as read
+      description: Mark a notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Notification ID
+      responses:
+        '200':
+          description: Notification marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 7
+                  is_read:
+                    type: integer
+                    example: 1
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        role:
+          type: string
+          enum: [admin, teacher, student]
+          example: "admin"
+        full_name:
+          type: string
+          example: "Admin One"
+        email:
+          type: string
+          format: email
+          example: "admin@example.com"
+        status:
+          type: string
+          enum: [active, inactive]
+          example: "active"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-10-15 14:23:44"
+
+    CreateUserRequest:
+      type: object
+      required:
+        - full_name
+        - email
+        - password
+        - role
+        - status
+      properties:
+        full_name:
+          type: string
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        password:
+          type: string
+          example: "P@ssw0rd!"
+        role:
+          type: string
+          enum: [admin, teacher, student]
+          example: "teacher"
+        status:
+          type: string
+          enum: [active, inactive]
+          example: "active"
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: "John Smith"
+        email:
+          type: string
+          format: email
+          example: "john.smith@example.com"
+        status:
+          type: string
+          enum: [active, inactive]
+          example: "inactive"
+
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        class_id:
+          type: string
+          example: "1"
+        subject_id:
+          type: string
+          example: "1"
+        teacher_id:
+          type: string
+          example: "2"
+        room_id:
+          type: string
+          example: "1"
+        timeslot_id:
+          type: string
+          example: "1"
+        weekday:
+          type: string
+          example: "1"
+        is_applied:
+          type: string
+          example: "1"
+        class_name:
+          type: string
+          example: "10A1"
+        subject_name:
+          type: string
+          example: "Toán"
+        teacher_name:
+          type: string
+          example: "Teacher A"
+        room_name:
+          type: string
+          example: "P101"
+        timeslot_name:
+          type: string
+          example: "Tiết 1"
+
+    ScheduleSearchResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          example: 2
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+
+    Assignment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        teacher_id:
+          type: string
+          example: "2"
+        class_id:
+          type: string
+          example: "1"
+        subject_id:
+          type: string
+          example: "1"
+        periods_per_week:
+          type: string
+          example: "4"
+        teacher_name:
+          type: string
+          example: "Teacher A"
+        subject_name:
+          type: string
+          example: "Toán"
+        class_name:
+          type: string
+          example: "10A1"
+
+    AssignmentListResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          example: 2
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Assignment'
+
+    CreateAssignmentRequest:
+      type: object
+      required:
+        - class_id
+        - teacher_id
+        - subject_id
+        - periods_per_week
+      properties:
+        class_id:
+          type: integer
+          example: 1
+        teacher_id:
+          type: integer
+          example: 2
+        subject_id:
+          type: integer
+          example: 1
+        periods_per_week:
+          type: integer
+          example: 4
+
+    UpdateAssignmentRequest:
+      type: object
+      properties:
+        periods_per_week:
+          type: integer
+          example: 5
+
+    Attendance:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        schedule_id:
+          type: string
+          example: "1"
+        student_id:
+          type: string
+          example: "4"
+        status:
+          type: string
+          enum: [present, absent, late]
+          example: "present"
+        note:
+          type: string
+          nullable: true
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-10-16 14:46:40"
+
+    MarkAttendanceRequest:
+      type: object
+      required:
+        - student_id
+        - status
+      properties:
+        student_id:
+          type: integer
+          example: 4
+        status:
+          type: string
+          enum: [present, absent, late]
+          example: "present"
+        note:
+          type: string
+          nullable: true
+          example: "sick"
+
+    AttendanceResponse:
+      type: object
+      properties:
+        done:
+          type: integer
+          example: 2
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              student_id:
+                type: integer
+                example: 4
+              updated:
+                type: boolean
+                example: true
+              created:
+                type: boolean
+                example: false
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        user_id:
+          type: string
+          example: "2"
+        title:
+          type: string
+          example: "Schedule Change"
+        message:
+          type: string
+          example: "Room P101 changed to P102"
+        is_read:
+          type: string
+          example: "0"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-10-16 14:16:38"
+
+    CreateNotificationRequest:
+      type: object
+      required:
+        - user_id
+        - title
+        - message
+      properties:
+        user_id:
+          type: integer
+          example: 2
+        title:
+          type: string
+          example: "Schedule Change"
+        message:
+          type: string
+          example: "Room P101 changed to P102"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid payload"
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            email: "The email field is required."
+
+tags:
+  - name: System
+    description: System health and status endpoints
+  - name: User Management
+    description: User CRUD operations and management
+  - name: Schedule Management
+    description: Schedule generation, application, and search
+  - name: Teaching Assignments
+    description: Teacher-class-subject assignment management
+  - name: Attendance
+    description: Student attendance tracking and management
+  - name: Notifications
+    description: Notification system for schedule changes and updates

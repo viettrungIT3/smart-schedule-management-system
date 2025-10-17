@@ -18,7 +18,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="MYSQL_PWD=${CI_DB_PASSWORD} mysqladmin ping -h localhost -ussms || exit 1"
+          --health-cmd="MYSQL_PWD=$$MYSQL_PASSWORD mysqladmin ping -h localhost -ussms || exit 1"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -30,6 +30,18 @@ jobs:
           extensions: intl, pdo_mysql, mysqli, zip, gd
       - name: Show PHP version
         run: php -v
+      - name: Check secrets
+        run: |
+          echo "Checking if required secrets are set..."
+          if [ -z "${{ secrets.CI_DB_PASSWORD }}" ]; then
+            echo "ERROR: CI_DB_PASSWORD secret is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.CI_DB_ROOT_PASSWORD }}" ]; then
+            echo "ERROR: CI_DB_ROOT_PASSWORD secret is not set"
+            exit 1
+          fi
+          echo "All required secrets are set"
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -61,9 +73,19 @@ jobs:
         env:
           MYSQL_PWD: ${{ secrets.CI_DB_PASSWORD }}
         run: |
-          for i in {1..30}; do
+          echo "Waiting for MySQL to be ready..."
+          for i in {1..60}; do
             if mysqladmin ping -h 127.0.0.1 -P 3306 -ussms --silent; then
-              echo "MySQL is up"; break; fi; echo waiting MySQL...; sleep 2; done
+              echo "MySQL is ready!"; break; 
+            fi; 
+            echo "Attempt $i/60: MySQL not ready yet, waiting..."; 
+            sleep 2; 
+          done
+          # Final check
+          if ! mysqladmin ping -h 127.0.0.1 -P 3306 -ussms --silent; then
+            echo "MySQL failed to start after 2 minutes"
+            exit 1
+          fi
       - name: Migrate & Seed
         working-directory: src
         run: |
