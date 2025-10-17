@@ -36,6 +36,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'jwt-auth'      => \App\Filters\JWTAuthFilter::class,
         'rbac'          => \App\Filters\RBACFilter::class,
+        'rate-limit'    => \App\Filters\RateLimitFilter::class,
     ];
 
     /**
@@ -74,8 +75,8 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
+            'csrf', // Enable CSRF protection for all POST requests
             // 'honeypot',
-            // 'csrf',
             // 'invalidchars',
         ],
         'after' => [

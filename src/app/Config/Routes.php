@@ -19,7 +19,7 @@ $routes->get('/docs', 'SwaggerController::index', ['as' => 'swagger_docs']);
 $routes->group('', static function ($routes) {
     // Login
     $routes->get('login', 'AuthController::login');
-    $routes->post('login', 'AuthController::processLogin');
+    $routes->post('login', 'AuthController::processLogin', ['filter' => 'rate-limit']);
     
     // Register
     $routes->get('register', 'AuthController::register');

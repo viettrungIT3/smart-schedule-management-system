@@ -105,11 +105,11 @@
                             <i class="bi bi-eye" id="toggleIcon"></i>
                         </button>
                     </div>
-                    <div class="invalid-feedback">
-                        Password must be at least 6 characters long.
-                    </div>
                     <div class="form-text">
-                        Password must be at least 6 characters long.
+                        Password must be at least 8 characters with uppercase, lowercase, and number.
+                    </div>
+                    <div class="invalid-feedback">
+                        Password must be at least 8 characters with uppercase, lowercase, and number.
                     </div>
                 </div>
 
