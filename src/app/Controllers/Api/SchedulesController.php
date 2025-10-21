@@ -44,7 +44,7 @@ class SchedulesController extends BaseController
             schedules.*,
             subjects.name as subject_name,
             subjects.code as subject_code,
-            CONCAT(users.first_name, " ", users.last_name) as teacher_name,
+            users.full_name as teacher_name,
             rooms.name as room_name,
             rooms.building,
             rooms.floor
@@ -68,8 +68,7 @@ class SchedulesController extends BaseController
         if (!empty($search)) {
             $builder->groupStart()
                 ->like('subjects.name', $search)
-                ->orLike('users.first_name', $search)
-                ->orLike('users.last_name', $search)
+                ->orLike('users.full_name', $search)
                 ->orLike('rooms.name', $search)
                 ->orLike('schedules.description', $search)
                 ->groupEnd();

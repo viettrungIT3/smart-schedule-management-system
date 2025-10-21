@@ -109,7 +109,7 @@ class ScheduleModel extends Model
             schedules.*,
             subjects.name as subject_name,
             subjects.code as subject_code,
-            CONCAT(users.first_name, " ", users.last_name) as teacher_name,
+            users.full_name as teacher_name,
             rooms.name as room_name,
             rooms.building,
             rooms.floor
@@ -129,7 +129,7 @@ class ScheduleModel extends Model
             subjects.name as subject_name,
             subjects.code as subject_code,
             subjects.description as subject_description,
-            CONCAT(users.first_name, " ", users.last_name) as teacher_name,
+            users.full_name as teacher_name,
             users.email as teacher_email,
             rooms.name as room_name,
             rooms.building,
@@ -150,7 +150,7 @@ class ScheduleModel extends Model
             schedules.*,
             subjects.name as subject_name,
             subjects.code as subject_code,
-            CONCAT(users.first_name, " ", users.last_name) as teacher_name,
+            users.full_name as teacher_name,
             rooms.name as room_name,
             rooms.building,
             rooms.floor

@@ -11,10 +11,10 @@ class UserModel extends Model
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $allowedFields = [
-        'first_name',
-        'last_name',
+        'role',
+        'full_name',
         'email',
-        'password',
+        'password_hash',
         'status',
         'last_login',
         'created_at',
@@ -24,23 +24,17 @@ class UserModel extends Model
 
     // Validation
     protected $validationRules = [
-        'first_name' => 'required|min_length[2]|max_length[50]',
-        'last_name' => 'required|min_length[2]|max_length[50]',
+        'full_name' => 'required|min_length[2]|max_length[100]',
         'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
-        'password' => 'required|min_length[6]',
+        'password' => 'permit_empty|min_length[6]',
         'status' => 'required|in_list[active,inactive]'
     ];
 
     protected $validationMessages = [
-        'first_name' => [
-            'required' => 'First name is required',
-            'min_length' => 'First name must be at least 2 characters',
-            'max_length' => 'First name cannot exceed 50 characters'
-        ],
-        'last_name' => [
-            'required' => 'Last name is required',
-            'min_length' => 'Last name must be at least 2 characters',
-            'max_length' => 'Last name cannot exceed 50 characters'
+        'full_name' => [
+            'required' => 'Full name is required',
+            'min_length' => 'Full name must be at least 2 characters',
+            'max_length' => 'Full name cannot exceed 100 characters'
         ],
         'email' => [
             'required' => 'Email is required',
@@ -48,7 +42,6 @@ class UserModel extends Model
             'is_unique' => 'Email already exists'
         ],
         'password' => [
-            'required' => 'Password is required',
             'min_length' => 'Password must be at least 6 characters'
         ],
         'status' => [
@@ -62,13 +55,14 @@ class UserModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert = ['hashPassword'];
-    protected $beforeUpdate = ['hashPassword'];
+    protected $beforeInsert = ['mapAndHashPassword'];
+    protected $beforeUpdate = ['mapAndHashPassword'];
 
-    protected function hashPassword(array $data)
+    protected function mapAndHashPassword(array $data)
     {
-        if (isset($data['data']['password'])) {
-            $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
+        if (isset($data['data']['password']) && $data['data']['password'] !== '') {
+            $data['data']['password_hash'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
+            unset($data['data']['password']);
         }
         return $data;
     }
@@ -134,8 +128,7 @@ class UserModel extends Model
     public function searchUsers($keyword)
     {
         return $this->groupStart()
-            ->like('first_name', $keyword)
-            ->orLike('last_name', $keyword)
+            ->like('full_name', $keyword)
             ->orLike('email', $keyword)
             ->groupEnd()
             ->findAll();

@@ -40,8 +40,7 @@ class UsersController extends BaseController
     public function store()
     {
         $rules = [
-            'first_name' => 'required|min_length[2]|max_length[50]',
-            'last_name' => 'required|min_length[2]|max_length[50]',
+            'full_name' => 'required|min_length[2]|max_length[100]',
             'email' => 'required|valid_email|is_unique[users.email]',
             'password' => 'required|min_length[6]',
             'password_confirm' => 'required|matches[password]',
@@ -55,10 +54,9 @@ class UsersController extends BaseController
         }
 
         $userData = [
-            'first_name' => $this->request->getPost('first_name'),
-            'last_name' => $this->request->getPost('last_name'),
+            'full_name' => $this->request->getPost('full_name'),
             'email' => $this->request->getPost('email'),
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'password' => $this->request->getPost('password'),
             'status' => 'active',
             'created_at' => date('Y-m-d H:i:s')
         ];
@@ -120,8 +118,7 @@ class UsersController extends BaseController
         }
 
         $rules = [
-            'first_name' => 'required|min_length[2]|max_length[50]',
-            'last_name' => 'required|min_length[2]|max_length[50]',
+            'full_name' => 'required|min_length[2]|max_length[100]',
             'email' => "required|valid_email|is_unique[users.email,id,{$id}]",
             'role' => 'required|in_list[admin,teacher,student]',
             'status' => 'required|in_list[active,inactive]'
@@ -140,8 +137,7 @@ class UsersController extends BaseController
         }
 
         $userData = [
-            'first_name' => $this->request->getPost('first_name'),
-            'last_name' => $this->request->getPost('last_name'),
+            'full_name' => $this->request->getPost('full_name'),
             'email' => $this->request->getPost('email'),
             'status' => $this->request->getPost('status'),
             'updated_at' => date('Y-m-d H:i:s')

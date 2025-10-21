@@ -43,8 +43,7 @@ class UsersController extends BaseController
         // Apply search
         if (!empty($search)) {
             $builder->groupStart()
-                ->like('users.first_name', $search)
-                ->orLike('users.last_name', $search)
+                ->like('users.full_name', $search)
                 ->orLike('users.email', $search)
                 ->orLike('roles.name', $search)
                 ->groupEnd();
@@ -64,7 +63,7 @@ class UsersController extends BaseController
             $data[] = [
                 'id' => $user['id'],
                 'avatar' => base_url('assets/ablepro/images/user/avatar-1.jpg'),
-                'full_name' => $user['first_name'] . ' ' . $user['last_name'],
+                'full_name' => $user['full_name'],
                 'email' => $user['email'],
                 'role' => $user['roles'] ?? 'No Role',
                 'status' => $user['status'],
@@ -101,8 +100,7 @@ class UsersController extends BaseController
     public function store()
     {
         $rules = [
-            'first_name' => 'required|min_length[2]|max_length[50]',
-            'last_name' => 'required|min_length[2]|max_length[50]',
+            'full_name' => 'required|min_length[2]|max_length[100]',
             'email' => 'required|valid_email|is_unique[users.email]',
             'password' => 'required|min_length[6]',
             'role' => 'required|in_list[admin,teacher,student]'
@@ -117,8 +115,7 @@ class UsersController extends BaseController
         }
 
         $userData = [
-            'first_name' => $this->request->getPost('first_name'),
-            'last_name' => $this->request->getPost('last_name'),
+            'full_name' => $this->request->getPost('full_name'),
             'email' => $this->request->getPost('email'),
             'password' => $this->request->getPost('password'),
             'status' => 'active'
@@ -155,8 +152,7 @@ class UsersController extends BaseController
         }
 
         $rules = [
-            'first_name' => 'required|min_length[2]|max_length[50]',
-            'last_name' => 'required|min_length[2]|max_length[50]',
+            'full_name' => 'required|min_length[2]|max_length[100]',
             'email' => "required|valid_email|is_unique[users.email,id,{$id}]",
             'role' => 'required|in_list[admin,teacher,student]',
             'status' => 'required|in_list[active,inactive]'
@@ -176,8 +172,7 @@ class UsersController extends BaseController
         }
 
         $userData = [
-            'first_name' => $this->request->getPost('first_name'),
-            'last_name' => $this->request->getPost('last_name'),
+            'full_name' => $this->request->getPost('full_name'),
             'email' => $this->request->getPost('email'),
             'status' => $this->request->getPost('status')
         ];
