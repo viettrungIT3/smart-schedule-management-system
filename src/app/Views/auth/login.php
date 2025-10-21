@@ -22,9 +22,9 @@
                             <label for="email" class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?= old('email') ?>" required>
                             <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('email')): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= session()->getFlashdata('validation')->getError('email') ?>
-                                </div>
+                                    <div class="invalid-feedback d-block">
+                                        <?= session()->getFlashdata('validation')->getError('email') ?>
+                                    </div>
                             <?php endif; ?>
                         </div>
                         
@@ -39,9 +39,9 @@
                                 </button>
                             </div>
                             <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('password')): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= session()->getFlashdata('validation')->getError('password') ?>
-                                </div>
+                                    <div class="invalid-feedback d-block">
+                                        <?= session()->getFlashdata('validation')->getError('password') ?>
+                                    </div>
                             <?php endif; ?>
                         </div>
                         

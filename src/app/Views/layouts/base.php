@@ -34,6 +34,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
     
+    <!-- SVG Icons Sprite -->
+    <?= file_get_contents(FCPATH . 'assets/images/icons.svg') ?>
+    
     <!-- Additional CSS -->
     <?= $this->renderSection('css') ?>
 </head>
@@ -54,35 +57,35 @@
         <div class="pc-content">
             <!-- Flash Messages -->
             <?php if (session()->getFlashdata('success')): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="ti ti-check-circle me-2"></i>
-                    <?= session()->getFlashdata('success') ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="ti ti-check-circle me-2"></i>
+                        <?= session()->getFlashdata('success') ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
             <?php endif; ?>
             
             <?php if (session()->getFlashdata('error')): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="ti ti-exclamation-triangle me-2"></i>
-                    <?= session()->getFlashdata('error') ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="ti ti-exclamation-triangle me-2"></i>
+                        <?= session()->getFlashdata('error') ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
             <?php endif; ?>
             
             <?php if (session()->getFlashdata('warning')): ?>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <i class="ti ti-exclamation-triangle me-2"></i>
-                    <?= session()->getFlashdata('warning') ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <i class="ti ti-exclamation-triangle me-2"></i>
+                        <?= session()->getFlashdata('warning') ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
             <?php endif; ?>
             
             <?php if (session()->getFlashdata('info')): ?>
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="ti ti-info-circle me-2"></i>
-                    <?= session()->getFlashdata('info') ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <i class="ti ti-info-circle me-2"></i>
+                        <?= session()->getFlashdata('info') ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
             <?php endif; ?>
             
             <!-- Page Content -->
@@ -122,7 +125,7 @@
                 <label class="form-label d-block">Preset</label>
                 <div class="d-flex gap-2 flex-wrap">
                     <?php for ($i = 1; $i <= 6; $i++): ?>
-                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="document.body.setAttribute('data-pc-preset','preset-<?= $i ?>')">Preset <?= $i ?></button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="document.body.setAttribute('data-pc-preset','preset-<?= $i ?>')">Preset <?= $i ?></button>
                     <?php endfor; ?>
                 </div>
             </div>

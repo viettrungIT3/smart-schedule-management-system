@@ -23,18 +23,18 @@
                                 <label for="first_name" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" value="<?= old('first_name') ?>" required>
                                 <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('first_name')): ?>
-                                    <div class="invalid-feedback d-block">
-                                        <?= session()->getFlashdata('validation')->getError('first_name') ?>
-                                    </div>
+                                        <div class="invalid-feedback d-block">
+                                            <?= session()->getFlashdata('validation')->getError('first_name') ?>
+                                        </div>
                                 <?php endif; ?>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="last_name" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter last name" value="<?= old('last_name') ?>" required>
                                 <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('last_name')): ?>
-                                    <div class="invalid-feedback d-block">
-                                        <?= session()->getFlashdata('validation')->getError('last_name') ?>
-                                    </div>
+                                        <div class="invalid-feedback d-block">
+                                            <?= session()->getFlashdata('validation')->getError('last_name') ?>
+                                        </div>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -43,9 +43,9 @@
                             <label for="email" class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?= old('email') ?>" required>
                             <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('email')): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= session()->getFlashdata('validation')->getError('email') ?>
-                                </div>
+                                    <div class="invalid-feedback d-block">
+                                        <?= session()->getFlashdata('validation')->getError('email') ?>
+                                    </div>
                             <?php endif; ?>
                         </div>
                         
@@ -61,9 +61,9 @@
                             </div>
                             <small class="text-muted">Password must be at least 6 characters long</small>
                             <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('password')): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= session()->getFlashdata('validation')->getError('password') ?>
-                                </div>
+                                    <div class="invalid-feedback d-block">
+                                        <?= session()->getFlashdata('validation')->getError('password') ?>
+                                    </div>
                             <?php endif; ?>
                         </div>
                         
@@ -78,9 +78,9 @@
                                 </button>
                             </div>
                             <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('password_confirm')): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= session()->getFlashdata('validation')->getError('password_confirm') ?>
-                                </div>
+                                    <div class="invalid-feedback d-block">
+                                        <?= session()->getFlashdata('validation')->getError('password_confirm') ?>
+                                    </div>
                             <?php endif; ?>
                         </div>
                         
@@ -92,9 +92,9 @@
                                 <option value="student" <?= old('role') == 'student' ? 'selected' : '' ?>>Student</option>
                             </select>
                             <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('role')): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= session()->getFlashdata('validation')->getError('role') ?>
-                                </div>
+                                    <div class="invalid-feedback d-block">
+                                        <?= session()->getFlashdata('validation')->getError('role') ?>
+                                    </div>
                             <?php endif; ?>
                         </div>
                         
@@ -104,9 +104,9 @@
                                 I agree to the <a href="#" class="link-primary">Terms and Conditions</a>
                             </label>
                             <?php if (session()->getFlashdata('validation') && session()->getFlashdata('validation')->hasError('terms')): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= session()->getFlashdata('validation')->getError('terms') ?>
-                                </div>
+                                    <div class="invalid-feedback d-block">
+                                        <?= session()->getFlashdata('validation')->getError('terms') ?>
+                                    </div>
                             <?php endif; ?>
                         </div>
                         

@@ -166,23 +166,23 @@
             <div class="card-body">
                 <div class="timeline">
                     <?php if (!empty($recent_activities)): ?>
-                        <?php foreach ($recent_activities as $activity): ?>
-                            <div class="timeline-item">
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h6 class="mb-1"><?= $activity['title'] ?></h6>
-                                    <p class="text-muted small mb-0"><?= $activity['description'] ?></p>
-                                    <small class="text-muted"><?= $activity['time'] ?></small>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+                            <?php foreach ($recent_activities as $activity): ?>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="mb-1"><?= $activity['title'] ?></h6>
+                                            <p class="text-muted small mb-0"><?= $activity['description'] ?></p>
+                                            <small class="text-muted"><?= $activity['time'] ?></small>
+                                        </div>
+                                    </div>
+                            <?php endforeach; ?>
                     <?php else: ?>
-                        <div class="text-center text-muted py-4">
-                            <svg class="pc-icon" style="font-size: 3rem;">
-                                <use xlink:href="#custom-inbox"></use>
-                            </svg>
-                            <p class="mt-2">No recent activity</p>
-                        </div>
+                            <div class="text-center text-muted py-4">
+                                <svg class="pc-icon" style="font-size: 3rem;">
+                                    <use xlink:href="#custom-inbox"></use>
+                                </svg>
+                                <p class="mt-2">No recent activity</p>
+                            </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -280,55 +280,55 @@
                         </thead>
                         <tbody>
                             <?php if (!empty($recent_users)): ?>
-                                <?php foreach ($recent_users as $user): ?>
+                                    <?php foreach ($recent_users as $user): ?>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0">
+                                                            <img src="<?= base_url('assets/images/user/avatar-1.jpg') ?>" alt="user-image" class="user-avtar rounded-circle" style="width: 40px; height: 40px;">
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-2">
+                                                            <h6 class="mb-0"><?= $user['full_name'] ?></h6>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><?= $user['email'] ?></td>
+                                                <td>
+                                                    <span class="badge bg-<?= $user['role'] == 'admin' ? 'danger' : ($user['role'] == 'teacher' ? 'primary' : 'success') ?>">
+                                                        <?= ucfirst($user['role']) ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-<?= $user['status'] == 'active' ? 'success' : 'danger' ?>">
+                                                        <?= ucfirst($user['status']) ?>
+                                                    </span>
+                                                </td>
+                                                <td><?= $user['last_login'] ?? 'Never' ?></td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a href="<?= base_url('/users/' . $user['id']) ?>" class="btn btn-outline-primary">
+                                                            <svg class="pc-icon">
+                                                                <use xlink:href="#custom-eye"></use>
+                                                            </svg>
+                                                        </a>
+                                                        <a href="<?= base_url('/users/' . $user['id'] . '/edit') ?>" class="btn btn-outline-secondary">
+                                                            <svg class="pc-icon">
+                                                                <use xlink:href="#custom-edit"></use>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                    <?php endforeach; ?>
+                            <?php else: ?>
                                     <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0">
-                                                    <img src="<?= base_url('assets/images/user/avatar-1.jpg') ?>" alt="user-image" class="user-avtar rounded-circle" style="width: 40px; height: 40px;">
-                                                </div>
-                                                <div class="flex-grow-1 ms-2">
-                                                    <h6 class="mb-0"><?= $user['full_name'] ?></h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><?= $user['email'] ?></td>
-                                        <td>
-                                            <span class="badge bg-<?= $user['role'] == 'admin' ? 'danger' : ($user['role'] == 'teacher' ? 'primary' : 'success') ?>">
-                                                <?= ucfirst($user['role']) ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-<?= $user['status'] == 'active' ? 'success' : 'danger' ?>">
-                                                <?= ucfirst($user['status']) ?>
-                                            </span>
-                                        </td>
-                                        <td><?= $user['last_login'] ?? 'Never' ?></td>
-                                        <td>
-                                            <div class="btn-group btn-group-sm">
-                                                <a href="<?= base_url('/users/' . $user['id']) ?>" class="btn btn-outline-primary">
-                                                    <svg class="pc-icon">
-                                                        <use xlink:href="#custom-eye"></use>
-                                                    </svg>
-                                                </a>
-                                                <a href="<?= base_url('/users/' . $user['id'] . '/edit') ?>" class="btn btn-outline-secondary">
-                                                    <svg class="pc-icon">
-                                                        <use xlink:href="#custom-edit"></use>
-                                                    </svg>
-                                                </a>
-                                            </div>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            <svg class="pc-icon" style="font-size: 3rem;">
+                                                <use xlink:href="#custom-inbox"></use>
+                                            </svg>
+                                            <p class="mt-2">No users found</p>
                                         </td>
                                     </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">
-                                        <svg class="pc-icon" style="font-size: 3rem;">
-                                            <use xlink:href="#custom-inbox"></use>
-                                        </svg>
-                                        <p class="mt-2">No users found</p>
-                                    </td>
-                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
