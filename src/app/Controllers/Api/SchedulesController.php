@@ -26,8 +26,8 @@ class SchedulesController extends BaseController
     public function index()
     {
         $draw = $this->request->getGet('draw');
-        $start = $this->request->getGet('start') ?? 0;
-        $length = $this->request->getGet('length') ?? 10;
+        $start = (int) ($this->request->getGet('start') ?? 0);
+        $length = (int) ($this->request->getGet('length') ?? 10);
         $search = $this->request->getGet('search')['value'] ?? '';
         $orderColumn = $this->request->getGet('order')[0]['column'] ?? 0;
         $orderDir = $this->request->getGet('order')[0]['dir'] ?? 'asc';
