@@ -61,12 +61,18 @@ class JWTAuthFilter implements FilterInterface
         // Get Authorization header
         $authHeader = $request->getHeaderLine('Authorization');
         
+        // Debug: Log the received header
+        log_message('debug', 'JWTAuthFilter - Received Authorization header: ' . $authHeader);
+        
         if (empty($authHeader)) {
             return $this->unauthorizedResponse('Authorization header is required');
         }
 
         // Extract token from header
         $token = $this->jwtHelper->extractTokenFromHeader($authHeader);
+        
+        // Debug: Log token extraction result
+        log_message('debug', 'JWTAuthFilter - Extracted token: ' . ($token ? 'SUCCESS' : 'FAILED'));
         
         if (!$token) {
             return $this->unauthorizedResponse('Invalid authorization header format');
