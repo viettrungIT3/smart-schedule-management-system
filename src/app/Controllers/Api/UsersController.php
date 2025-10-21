@@ -67,7 +67,7 @@ class UsersController extends BaseController
                 'email' => $user['email'],
                 'role' => $user['roles'] ?? 'No Role',
                 'status' => $user['status'],
-                'last_login' => $user['last_login'],
+                'last_login' => $user['last_login'] ?? null,
                 'created_at' => $user['created_at']
             ];
         }
