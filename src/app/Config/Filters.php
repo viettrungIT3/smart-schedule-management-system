@@ -75,7 +75,7 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'csrf', // Enable CSRF protection for all POST requests
+            'csrf' => ['except' => ['api/*']], // Enable CSRF globally, except API endpoints
             // 'honeypot',
             // 'invalidchars',
         ],
