@@ -43,6 +43,34 @@ $routes->group('', static function ($routes) {
 });
 
 // ============================================================================
+// MANAGEMENT ROUTES
+// ============================================================================
+$routes->group('', static function ($routes) {
+    // Users Management
+    $routes->get('users', 'UsersController::index');
+    $routes->get('users/create', 'UsersController::create');
+    $routes->post('users', 'UsersController::store');
+    $routes->get('users/(:num)', 'UsersController::show/$1');
+    $routes->get('users/(:num)/edit', 'UsersController::edit/$1');
+    $routes->put('users/(:num)', 'UsersController::update/$1');
+    $routes->delete('users/(:num)', 'UsersController::delete/$1');
+    
+    // Schedules Management
+    $routes->get('schedules', 'SchedulesController::index');
+    $routes->get('schedules/calendar', 'SchedulesController::calendar');
+    $routes->get('schedules/create', 'SchedulesController::create');
+    $routes->post('schedules', 'SchedulesController::store');
+    $routes->get('schedules/(:num)', 'SchedulesController::show/$1');
+    $routes->get('schedules/(:num)/edit', 'SchedulesController::edit/$1');
+    $routes->put('schedules/(:num)', 'SchedulesController::update/$1');
+    $routes->delete('schedules/(:num)', 'SchedulesController::delete/$1');
+    
+    // Settings
+    $routes->get('settings', 'SettingsController::index');
+    $routes->post('settings/(:segment)', 'SettingsController::save/$1');
+});
+
+// ============================================================================
 // API ROUTES
 // ============================================================================
 $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function ($routes) {
