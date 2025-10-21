@@ -20,14 +20,14 @@ $routes->group('', static function ($routes) {
     // Login
     $routes->get('login', 'AuthController::login');
     $routes->post('login', 'AuthController::processLogin', ['filter' => 'rate-limit']);
-    
+
     // Register
     $routes->get('register', 'AuthController::register');
     $routes->post('register', 'AuthController::processRegister');
-    
+
     // Logout
     $routes->get('logout', 'AuthController::logout');
-    
+
     // Profile
     $routes->get('profile', 'AuthController::profile');
 });
@@ -54,7 +54,7 @@ $routes->group('', static function ($routes) {
     $routes->get('users/(:num)/edit', 'UsersController::edit/$1');
     $routes->put('users/(:num)', 'UsersController::update/$1');
     $routes->delete('users/(:num)', 'UsersController::delete/$1');
-    
+
     // Schedules Management
     $routes->get('schedules', 'SchedulesController::index');
     $routes->get('schedules/calendar', 'SchedulesController::calendar');
@@ -64,7 +64,7 @@ $routes->group('', static function ($routes) {
     $routes->get('schedules/(:num)/edit', 'SchedulesController::edit/$1');
     $routes->put('schedules/(:num)', 'SchedulesController::update/$1');
     $routes->delete('schedules/(:num)', 'SchedulesController::delete/$1');
-    
+
     // Settings
     $routes->get('settings', 'SettingsController::index');
     $routes->post('settings/(:segment)', 'SettingsController::save/$1');
@@ -74,7 +74,7 @@ $routes->group('', static function ($routes) {
 // API ROUTES
 // ============================================================================
 $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function ($routes) {
-    
+
     // ------------------------------------------------------------------------
     // AUTHENTICATION (FU-AUTH-01)
     // ------------------------------------------------------------------------
@@ -83,7 +83,7 @@ $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function 
     $routes->post('auth/refresh', 'AuthController::refresh');
     $routes->get('auth/profile', 'AuthController::profile', ['filter' => 'jwt-auth']);
     $routes->post('auth/change-password', 'AuthController::changePassword', ['filter' => 'jwt-auth']);
-    
+
     // ------------------------------------------------------------------------
     // SCHEDULES (FU-02, FU-05)
     // ------------------------------------------------------------------------
@@ -92,7 +92,7 @@ $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function 
     $routes->get('schedules/search', 'ScheduleController::search');
     $routes->post('schedules/generate', 'ScheduleController::generate');
     $routes->post('schedules/apply', 'ScheduleController::apply');
-    
+
     // ------------------------------------------------------------------------
     // TEACHING ASSIGNMENTS (FU-03)
     // ------------------------------------------------------------------------
@@ -102,20 +102,20 @@ $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function 
     $routes->post('assignments', 'TeachingAssignmentController::create');
     $routes->put('assignments/(:num)', 'TeachingAssignmentController::update/$1');
     $routes->delete('assignments/(:num)', 'TeachingAssignmentController::delete/$1');
-    
+
     // ------------------------------------------------------------------------
     // ATTENDANCE (FU-06)
     // ------------------------------------------------------------------------
     $routes->get('attendance/schedule/(:num)', 'AttendanceController::listBySchedule/$1');
     $routes->post('attendance/schedule/(:num)', 'AttendanceController::markForSchedule/$1');
-    
+
     // ------------------------------------------------------------------------
     // NOTIFICATIONS (FU-07)
     // ------------------------------------------------------------------------
     $routes->get('notifications/user/(:num)', 'NotificationController::listByUser/$1');
     $routes->post('notifications', 'NotificationController::create');
     $routes->post('notifications/(:num)/read', 'NotificationController::markRead/$1');
-    
+
     // ------------------------------------------------------------------------
     // USER MANAGEMENT (FU-01)
     // ------------------------------------------------------------------------
