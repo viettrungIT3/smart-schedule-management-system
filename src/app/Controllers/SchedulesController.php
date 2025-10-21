@@ -104,7 +104,7 @@ class SchedulesController extends BaseController
     public function show($id)
     {
         $schedule = $this->scheduleModel->getScheduleWithDetails($id);
-        
+
         if (!$schedule) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Schedule not found');
         }
@@ -120,7 +120,7 @@ class SchedulesController extends BaseController
     public function edit($id)
     {
         $schedule = $this->scheduleModel->getScheduleWithDetails($id);
-        
+
         if (!$schedule) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Schedule not found');
         }
@@ -139,7 +139,7 @@ class SchedulesController extends BaseController
     public function update($id)
     {
         $schedule = $this->scheduleModel->find($id);
-        
+
         if (!$schedule) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Schedule not found');
         }
@@ -191,7 +191,7 @@ class SchedulesController extends BaseController
     public function delete($id)
     {
         $schedule = $this->scheduleModel->find($id);
-        
+
         if (!$schedule) {
             return $this->respond([
                 'success' => false,

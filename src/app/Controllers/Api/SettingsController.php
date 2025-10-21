@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
 
@@ -8,12 +8,12 @@ class SettingsController extends BaseController
 {
     public function index()
     {
-        $data = [
-            'title' => 'System Settings - ScheduleFlow',
-            'settings' => $this->getCurrentSettings()
-        ];
+        $settings = $this->getCurrentSettings();
 
-        return view('settings/index', $data);
+        return $this->respond([
+            'success' => true,
+            'data' => $settings
+        ]);
     }
 
     public function save($category)

@@ -80,11 +80,11 @@ class UserModel extends Model
             GROUP_CONCAT(roles.name) as roles,
             GROUP_CONCAT(roles.id) as role_ids
         ')
-        ->join('user_roles', 'user_roles.user_id = users.id', 'left')
-        ->join('roles', 'roles.id = user_roles.role_id', 'left')
-        ->groupBy('users.id')
-        ->orderBy('users.created_at', 'DESC')
-        ->findAll();
+            ->join('user_roles', 'user_roles.user_id = users.id', 'left')
+            ->join('roles', 'roles.id = user_roles.role_id', 'left')
+            ->groupBy('users.id')
+            ->orderBy('users.created_at', 'DESC')
+            ->findAll();
     }
 
     public function getUserWithRoles($id)
@@ -95,23 +95,23 @@ class UserModel extends Model
             GROUP_CONCAT(roles.id) as role_ids,
             GROUP_CONCAT(permissions.name) as permissions
         ')
-        ->join('user_roles', 'user_roles.user_id = users.id', 'left')
-        ->join('roles', 'roles.id = user_roles.role_id', 'left')
-        ->join('role_permissions', 'role_permissions.role_id = roles.id', 'left')
-        ->join('permissions', 'permissions.id = role_permissions.permission_id', 'left')
-        ->where('users.id', $id)
-        ->groupBy('users.id')
-        ->first();
+            ->join('user_roles', 'user_roles.user_id = users.id', 'left')
+            ->join('roles', 'roles.id = user_roles.role_id', 'left')
+            ->join('role_permissions', 'role_permissions.role_id = roles.id', 'left')
+            ->join('permissions', 'permissions.id = role_permissions.permission_id', 'left')
+            ->where('users.id', $id)
+            ->groupBy('users.id')
+            ->first();
     }
 
     public function getUsersByRole($role)
     {
         return $this->select('users.*')
-        ->join('user_roles', 'user_roles.user_id = users.id')
-        ->join('roles', 'roles.id = user_roles.role_id')
-        ->where('roles.name', $role)
-        ->where('users.status', 'active')
-        ->findAll();
+            ->join('user_roles', 'user_roles.user_id = users.id')
+            ->join('roles', 'roles.id = user_roles.role_id')
+            ->where('roles.name', $role)
+            ->where('users.status', 'active')
+            ->findAll();
     }
 
     public function getActiveUsers()

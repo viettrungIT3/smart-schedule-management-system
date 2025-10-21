@@ -81,7 +81,7 @@ class UsersController extends BaseController
     public function show($id)
     {
         $user = $this->userModel->getUserWithRoles($id);
-        
+
         if (!$user) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('User not found');
         }
@@ -97,7 +97,7 @@ class UsersController extends BaseController
     public function edit($id)
     {
         $user = $this->userModel->getUserWithRoles($id);
-        
+
         if (!$user) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('User not found');
         }
@@ -114,7 +114,7 @@ class UsersController extends BaseController
     public function update($id)
     {
         $user = $this->userModel->find($id);
-        
+
         if (!$user) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('User not found');
         }
@@ -169,7 +169,7 @@ class UsersController extends BaseController
     public function delete($id)
     {
         $user = $this->userModel->find($id);
-        
+
         if (!$user) {
             return $this->respond([
                 'success' => false,

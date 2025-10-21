@@ -87,11 +87,40 @@ $routes->group('api', ['namespace' => 'App\\Controllers\\Api'], static function 
     // ------------------------------------------------------------------------
     // SCHEDULES (FU-02, FU-05)
     // ------------------------------------------------------------------------
+    $routes->get('schedules', 'SchedulesController::index', ['filter' => 'jwt-auth']);
+    $routes->get('schedules/calendar', 'SchedulesController::calendar', ['filter' => 'jwt-auth']);
+    $routes->get('schedules/(:num)', 'SchedulesController::show/$1', ['filter' => 'jwt-auth']);
+    $routes->post('schedules', 'SchedulesController::store', ['filter' => 'jwt-auth']);
+    $routes->put('schedules/(:num)', 'SchedulesController::update/$1', ['filter' => 'jwt-auth']);
+    $routes->delete('schedules/(:num)', 'SchedulesController::delete/$1', ['filter' => 'jwt-auth']);
+
+    // Legacy schedule routes
     $routes->get('schedules/class/(:num)', 'ScheduleController::byClass/$1');
     $routes->get('schedules/teacher/(:num)', 'ScheduleController::byTeacher/$1');
     $routes->get('schedules/search', 'ScheduleController::search');
     $routes->post('schedules/generate', 'ScheduleController::generate');
     $routes->post('schedules/apply', 'ScheduleController::apply');
+
+    // ------------------------------------------------------------------------
+    // USERS MANAGEMENT
+    // ------------------------------------------------------------------------
+    $routes->get('users', 'UsersController::index', ['filter' => 'jwt-auth']);
+    $routes->get('users/(:num)', 'UsersController::show/$1', ['filter' => 'jwt-auth']);
+    $routes->post('users', 'UsersController::store', ['filter' => 'jwt-auth']);
+    $routes->put('users/(:num)', 'UsersController::update/$1', ['filter' => 'jwt-auth']);
+    $routes->delete('users/(:num)', 'UsersController::delete/$1', ['filter' => 'jwt-auth']);
+
+    // ------------------------------------------------------------------------
+    // SUBJECTS & ROOMS
+    // ------------------------------------------------------------------------
+    $routes->get('subjects', 'SubjectsController::index', ['filter' => 'jwt-auth']);
+    $routes->get('rooms', 'RoomsController::index', ['filter' => 'jwt-auth']);
+
+    // ------------------------------------------------------------------------
+    // SETTINGS
+    // ------------------------------------------------------------------------
+    $routes->get('settings', 'SettingsController::index', ['filter' => 'jwt-auth']);
+    $routes->post('settings/(:segment)', 'SettingsController::save/$1', ['filter' => 'jwt-auth']);
 
     // ------------------------------------------------------------------------
     // TEACHING ASSIGNMENTS (FU-03)

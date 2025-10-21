@@ -114,12 +114,12 @@ class ScheduleModel extends Model
             rooms.building,
             rooms.floor
         ')
-        ->join('subjects', 'subjects.id = schedules.subject_id')
-        ->join('users', 'users.id = schedules.teacher_id')
-        ->join('rooms', 'rooms.id = schedules.room_id')
-        ->orderBy('schedules.schedule_date', 'DESC')
-        ->orderBy('schedules.start_time', 'ASC')
-        ->findAll();
+            ->join('subjects', 'subjects.id = schedules.subject_id')
+            ->join('users', 'users.id = schedules.teacher_id')
+            ->join('rooms', 'rooms.id = schedules.room_id')
+            ->orderBy('schedules.schedule_date', 'DESC')
+            ->orderBy('schedules.start_time', 'ASC')
+            ->findAll();
     }
 
     public function getScheduleWithDetails($id)
@@ -137,11 +137,11 @@ class ScheduleModel extends Model
             rooms.capacity,
             rooms.equipment
         ')
-        ->join('subjects', 'subjects.id = schedules.subject_id')
-        ->join('users', 'users.id = schedules.teacher_id')
-        ->join('rooms', 'rooms.id = schedules.room_id')
-        ->where('schedules.id', $id)
-        ->first();
+            ->join('subjects', 'subjects.id = schedules.subject_id')
+            ->join('users', 'users.id = schedules.teacher_id')
+            ->join('rooms', 'rooms.id = schedules.room_id')
+            ->where('schedules.id', $id)
+            ->first();
     }
 
     public function getSchedulesByDate($date)
@@ -155,12 +155,12 @@ class ScheduleModel extends Model
             rooms.building,
             rooms.floor
         ')
-        ->join('subjects', 'subjects.id = schedules.subject_id')
-        ->join('users', 'users.id = schedules.teacher_id')
-        ->join('rooms', 'rooms.id = schedules.room_id')
-        ->where('schedules.schedule_date', $date)
-        ->orderBy('schedules.start_time', 'ASC')
-        ->findAll();
+            ->join('subjects', 'subjects.id = schedules.subject_id')
+            ->join('users', 'users.id = schedules.teacher_id')
+            ->join('rooms', 'rooms.id = schedules.room_id')
+            ->where('schedules.schedule_date', $date)
+            ->orderBy('schedules.start_time', 'ASC')
+            ->findAll();
     }
 
     public function getSchedulesByTeacher($teacherId, $startDate = null, $endDate = null)
@@ -173,9 +173,9 @@ class ScheduleModel extends Model
             rooms.building,
             rooms.floor
         ')
-        ->join('subjects', 'subjects.id = schedules.subject_id')
-        ->join('rooms', 'rooms.id = schedules.room_id')
-        ->where('schedules.teacher_id', $teacherId);
+            ->join('subjects', 'subjects.id = schedules.subject_id')
+            ->join('rooms', 'rooms.id = schedules.room_id')
+            ->where('schedules.teacher_id', $teacherId);
 
         if ($startDate) {
             $builder->where('schedules.schedule_date >=', $startDate);
@@ -185,8 +185,8 @@ class ScheduleModel extends Model
         }
 
         return $builder->orderBy('schedules.schedule_date', 'ASC')
-                      ->orderBy('schedules.start_time', 'ASC')
-                      ->findAll();
+            ->orderBy('schedules.start_time', 'ASC')
+            ->findAll();
     }
 
     public function getSchedulesByRoom($roomId, $startDate = null, $endDate = null)
@@ -197,9 +197,9 @@ class ScheduleModel extends Model
             subjects.code as subject_code,
             CONCAT(users.first_name, " ", users.last_name) as teacher_name
         ')
-        ->join('subjects', 'subjects.id = schedules.subject_id')
-        ->join('users', 'users.id = schedules.teacher_id')
-        ->where('schedules.room_id', $roomId);
+            ->join('subjects', 'subjects.id = schedules.subject_id')
+            ->join('users', 'users.id = schedules.teacher_id')
+            ->where('schedules.room_id', $roomId);
 
         if ($startDate) {
             $builder->where('schedules.schedule_date >=', $startDate);
@@ -209,8 +209,8 @@ class ScheduleModel extends Model
         }
 
         return $builder->orderBy('schedules.schedule_date', 'ASC')
-                      ->orderBy('schedules.start_time', 'ASC')
-                      ->findAll();
+            ->orderBy('schedules.start_time', 'ASC')
+            ->findAll();
     }
 
     public function getCalendarEvents($startDate = null, $endDate = null)
@@ -227,10 +227,10 @@ class ScheduleModel extends Model
             CONCAT(users.first_name, " ", users.last_name) as teacher_name,
             rooms.name as room_name
         ')
-        ->join('subjects', 'subjects.id = schedules.subject_id')
-        ->join('users', 'users.id = schedules.teacher_id')
-        ->join('rooms', 'rooms.id = schedules.room_id')
-        ->where('schedules.status', 'active');
+            ->join('subjects', 'subjects.id = schedules.subject_id')
+            ->join('users', 'users.id = schedules.teacher_id')
+            ->join('rooms', 'rooms.id = schedules.room_id')
+            ->where('schedules.status', 'active');
 
         if ($startDate) {
             $builder->where('schedules.schedule_date >=', $startDate);
@@ -240,26 +240,26 @@ class ScheduleModel extends Model
         }
 
         return $builder->orderBy('schedules.schedule_date', 'ASC')
-                      ->orderBy('schedules.start_time', 'ASC')
-                      ->findAll();
+            ->orderBy('schedules.start_time', 'ASC')
+            ->findAll();
     }
 
     public function checkRoomAvailability($roomId, $date, $startTime, $endTime, $excludeId = null)
     {
         $builder = $this->where('room_id', $roomId)
-                       ->where('schedule_date', $date)
-                       ->where('status', 'active')
-                       ->groupStart()
-                       ->where('start_time <=', $startTime)
-                       ->where('end_time >', $startTime)
-                       ->orGroupStart()
-                       ->where('start_time <', $endTime)
-                       ->where('end_time >=', $endTime)
-                       ->orGroupStart()
-                       ->where('start_time >=', $startTime)
-                       ->where('end_time <=', $endTime)
-                       ->groupEnd()
-                       ->groupEnd();
+            ->where('schedule_date', $date)
+            ->where('status', 'active')
+            ->groupStart()
+            ->where('start_time <=', $startTime)
+            ->where('end_time >', $startTime)
+            ->orGroupStart()
+            ->where('start_time <', $endTime)
+            ->where('end_time >=', $endTime)
+            ->orGroupStart()
+            ->where('start_time >=', $startTime)
+            ->where('end_time <=', $endTime)
+            ->groupEnd()
+            ->groupEnd();
 
         if ($excludeId) {
             $builder->where('id !=', $excludeId);
@@ -282,14 +282,14 @@ class ScheduleModel extends Model
             rooms.building,
             rooms.floor
         ')
-        ->join('subjects', 'subjects.id = schedules.subject_id')
-        ->join('users', 'users.id = schedules.teacher_id')
-        ->join('rooms', 'rooms.id = schedules.room_id')
-        ->where('schedules.schedule_date >=', $startDate)
-        ->where('schedules.schedule_date <=', $endDate)
-        ->where('schedules.status', 'active')
-        ->orderBy('schedules.schedule_date', 'ASC')
-        ->orderBy('schedules.start_time', 'ASC')
-        ->findAll();
+            ->join('subjects', 'subjects.id = schedules.subject_id')
+            ->join('users', 'users.id = schedules.teacher_id')
+            ->join('rooms', 'rooms.id = schedules.room_id')
+            ->where('schedules.schedule_date >=', $startDate)
+            ->where('schedules.schedule_date <=', $endDate)
+            ->where('schedules.status', 'active')
+            ->orderBy('schedules.schedule_date', 'ASC')
+            ->orderBy('schedules.start_time', 'ASC')
+            ->findAll();
     }
 }
