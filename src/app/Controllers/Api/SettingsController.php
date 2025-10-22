@@ -27,19 +27,12 @@ class SettingsController extends BaseController
             ], 400);
         }
 
-        // Try to get JSON data first, fallback to POST data
-        $data = $this->request->getJSON(true);
-
+        // Get data from POST (form data)
+        $data = $this->request->getPost();
+        
+        // If no POST data, try JSON
         if (!$data) {
-            $data = $this->request->getPost();
-        }
-
-        // If still no data, try to parse JSON from raw input
-        if (!$data) {
-            $rawInput = $this->request->getBody();
-            if ($rawInput) {
-                $data = json_decode($rawInput, true);
-            }
+            $data = $this->request->getJSON(true);
         }
 
         // Validate data based on category

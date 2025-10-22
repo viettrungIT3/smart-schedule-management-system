@@ -115,7 +115,7 @@ log "${BLUE}Step 3: Testing POST Endpoints${NC}"
 
 # Test user creation
 test_endpoint "POST" "/api/users" \
-    "full_name=Test User&email=testuser@example.com&password=test123&role=student" \
+    "full_name=Test User New&email=testusernew@example.com&password=test123&role=student" \
     "200" "Create User API"
 
 # Test schedule creation
