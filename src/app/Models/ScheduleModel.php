@@ -16,6 +16,9 @@ class ScheduleModel extends Model
         'subject_id',
         'teacher_id',
         'room_id',
+        'class_id',
+        'timeslot_id',
+        'weekday',
         'schedule_date',
         'start_time',
         'end_time',
@@ -250,15 +253,8 @@ class ScheduleModel extends Model
             ->where('schedule_date', $date)
             ->where('status', 'active')
             ->groupStart()
-            ->where('start_time <=', $startTime)
-            ->where('end_time >', $startTime)
-            ->orGroupStart()
-            ->where('start_time <', $endTime)
-            ->where('end_time >=', $endTime)
-            ->orGroupStart()
-            ->where('start_time >=', $startTime)
-            ->where('end_time <=', $endTime)
-            ->groupEnd()
+                ->where('start_time <', $endTime)
+                ->where('end_time >', $startTime)
             ->groupEnd();
 
         if ($excludeId) {
