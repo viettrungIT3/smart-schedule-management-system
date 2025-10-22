@@ -85,6 +85,11 @@ class SchedulesController extends BaseController
         // Format data for DataTables
         $data = [];
         foreach ($schedules as $schedule) {
+            // Calculate duration from start_time and end_time
+            $start = strtotime($schedule['start_time']);
+            $end = strtotime($schedule['end_time']);
+            $duration = $end - $start; // Duration in seconds
+
             $data[] = [
                 'id' => $schedule['id'],
                 'subject_name' => $schedule['subject_name'],
@@ -93,7 +98,7 @@ class SchedulesController extends BaseController
                 'schedule_date' => $schedule['schedule_date'],
                 'start_time' => $schedule['start_time'],
                 'end_time' => $schedule['end_time'],
-                'duration' => $schedule['duration'],
+                'duration' => $duration,
                 'status' => $schedule['status']
             ];
         }

@@ -1,0 +1,140 @@
+[1;33m=== API Endpoints Testing ===[0m
+Base URL: http://localhost:8088
+Test User: admin@example.com
+Timestamp: Tue Oct 21 21:15:21 +07 2025
+
+[0;34mStep 1: Authentication[0m
+[0;32m✅ Login successful[0m
+Token length: 357
+
+[0;34mStep 2: Testing API Endpoints[0m
+[0;34mTesting: Users API (DataTables)[0m
+  Endpoint: GET /api/users?length=5
+[1;33m=== API Endpoints Testing ===[0m
+Base URL: http://localhost:8088
+Test User: admin@example.com
+Timestamp: Tue Oct 21 21:16:38 +07 2025
+
+[0;34mStep 1: Authentication[0m
+[0;32m✅ Login successful[0m
+Token length: 357
+
+[0;34mStep 2: Testing API Endpoints[0m
+[0;34mTesting: Users API (DataTables)[0m
+  Endpoint: GET /api/users?length=5
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: Get User by ID[0m
+  Endpoint: GET /api/users/1
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 404)
+
+[0;34mTesting: Schedules API (DataTables)[0m
+  Endpoint: GET /api/schedules?length=5
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: Schedules Calendar API[0m
+  Endpoint: GET /api/schedules/calendar
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mTesting: Subjects API[0m
+  Endpoint: GET /api/subjects
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: Rooms API[0m
+  Endpoint: GET /api/rooms
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: Settings API[0m
+  Endpoint: GET /api/settings
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: User Profile API[0m
+  Endpoint: GET /api/auth/profile
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mStep 3: Testing POST Endpoints[0m
+[0;34mTesting: Create User API[0m
+  Endpoint: POST /api/users
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mTesting: Create Schedule API[0m
+  Endpoint: POST /api/schedules
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mStep 4: Testing Settings Save[0m
+[0;34mTesting: Save General Settings[0m
+  Endpoint: POST /api/settings/general
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mTesting: Save Appearance Settings[0m
+  Endpoint: POST /api/settings/appearance
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[1;33m=== Testing Complete ===[0m
+All API endpoints tested successfully!
+Check test_results.log for detailed results.
+
+[1;33m=== API Endpoints Testing ===[0m
+Base URL: http://localhost:8088
+Test User: admin@example.com
+Timestamp: Wed Oct 22 21:44:41 +07 2025
+
+[0;34mStep 1: Authentication[0m
+[0;32m✅ Login successful[0m
+Token length: 357
+
+[0;34mStep 2: Testing API Endpoints[0m
+[0;34mTesting: Users API (DataTables)[0m
+  Endpoint: GET /api/users?length=5
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: Get User by ID[0m
+  Endpoint: GET /api/users/1
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 404)
+
+[0;34mTesting: Schedules API (DataTables)[0m
+  Endpoint: GET /api/schedules?length=5
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mTesting: Schedules Calendar API[0m
+  Endpoint: GET /api/schedules/calendar
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mTesting: Subjects API[0m
+  Endpoint: GET /api/subjects
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: Rooms API[0m
+  Endpoint: GET /api/rooms
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: Settings API[0m
+  Endpoint: GET /api/settings
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mTesting: User Profile API[0m
+  Endpoint: GET /api/auth/profile
+  [0;32m✅ PASS[0m (Status: 200)
+
+[0;34mStep 3: Testing POST Endpoints[0m
+[0;34mTesting: Create User API[0m
+  Endpoint: POST /api/users
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 400)
+
+[0;34mTesting: Create Schedule API[0m
+  Endpoint: POST /api/schedules
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mStep 4: Testing Settings Save[0m
+[0;34mTesting: Save General Settings[0m
+  Endpoint: POST /api/settings/general
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[0;34mTesting: Save Appearance Settings[0m
+  Endpoint: POST /api/settings/appearance
+  [0;31m❌ FAIL[0m (Expected: 200, Got: 500)
+
+[1;33m=== Testing Complete ===[0m
+All API endpoints tested successfully!
+Check test_results.log for detailed results.
+

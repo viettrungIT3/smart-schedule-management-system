@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateSubjectsTable extends Migration
+class CreateTimeslotsTable extends Migration
 {
     public function up()
     {
@@ -17,18 +17,15 @@ class CreateSubjectsTable extends Migration
             ],
             'name' => [
                 'type' => 'VARCHAR',
-                'constraint' => 100,
+                'constraint' => 50,
             ],
-            'code' => [
-                'type' => 'VARCHAR',
-                'constraint' => 20,
-                'unique' => true,
+            'start_time' => [
+                'type' => 'TIME',
             ],
-            'description' => [
-                'type' => 'TEXT',
-                'null' => true,
+            'end_time' => [
+                'type' => 'TIME',
             ],
-            'credits' => [
+            'order' => [
                 'type' => 'INT',
                 'constraint' => 3,
                 'unsigned' => true,
@@ -49,12 +46,12 @@ class CreateSubjectsTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addKey('code');
-        $this->forge->createTable('subjects');
+        $this->forge->addKey('order');
+        $this->forge->createTable('timeslots');
     }
 
     public function down()
     {
-        $this->forge->dropTable('subjects');
+        $this->forge->dropTable('timeslots');
     }
 }

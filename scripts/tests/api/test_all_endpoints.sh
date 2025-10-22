@@ -115,12 +115,12 @@ log "${BLUE}Step 3: Testing POST Endpoints${NC}"
 
 # Test user creation
 test_endpoint "POST" "/api/users" \
-    "full_name=Test User&email=test@example.com&password=test123&role=student" \
+    "full_name=Test User&email=testuser@example.com&password=test123&role=student" \
     "200" "Create User API"
 
 # Test schedule creation
 test_endpoint "POST" "/api/schedules" \
-    "subject_id=1&teacher_id=1&room_id=1&schedule_date=2024-12-01&start_time=09:00&end_time=10:00" \
+    "subject_id=1&teacher_id=3&room_id=1&class_id=3&timeslot_id=1&weekday=1&schedule_date=2024-12-01&start_time=09:00&end_time=10:00" \
     "200" "Create Schedule API"
 
 # Step 4: Test settings save

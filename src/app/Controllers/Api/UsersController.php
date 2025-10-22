@@ -124,8 +124,12 @@ class UsersController extends BaseController
         $userId = $this->userModel->insert($userData);
 
         if ($userId) {
-            // Assign role to user
-            $this->rbacService->assignRole($userId, $this->request->getPost('role'));
+            // Assign role to user - get role ID from role name
+            $roleName = $this->request->getPost('role');
+            $role = $this->rbacService->getRoleByName($roleName);
+            if ($role) {
+                $this->rbacService->assignRole($userId, $role['id']);
+            }
 
             return $this->respond([
                 'success' => true,

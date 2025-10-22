@@ -224,7 +224,7 @@ class ScheduleModel extends Model
             schedules.description,
             subjects.name as title,
             subjects.code as subject_code,
-            CONCAT(users.first_name, " ", users.last_name) as teacher_name,
+            users.full_name as teacher_name,
             rooms.name as room_name
         ')
             ->join('subjects', 'subjects.id = schedules.subject_id')
@@ -277,7 +277,7 @@ class ScheduleModel extends Model
             schedules.*,
             subjects.name as subject_name,
             subjects.code as subject_code,
-            CONCAT(users.first_name, " ", users.last_name) as teacher_name,
+            users.full_name as teacher_name,
             rooms.name as room_name,
             rooms.building,
             rooms.floor
