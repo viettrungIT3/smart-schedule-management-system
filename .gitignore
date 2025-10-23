@@ -20,4 +20,5 @@ vendor/
 
 references
 *.log
+.cursor/
 API_TESTING_REPORT.md
